@@ -1,0 +1,161 @@
+Analytical bipolar off-pole test: physics checks summary
+
+case_directory
+/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched
+
+main_files
+full_pole_smoke_par=/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/pc_smoke.par
+off_pole_smoke_par=/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/pc_smoke_offpole.par
+user_module=/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/mod_usr.t
+full_pole_log=/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/data/pc_smoke.log
+full_pole_stdout=/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/data/pc_smoke.stdout
+off_pole_log=/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/data/pc_smoke_offpole.log
+off_pole_stdout=/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/data/pc_smoke_offpole.stdout
+off_pole_init_vtu=/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/data/pc_smoke_offpole0000.vtu
+off_pole_final_vtu=/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/data/pc_smoke_offpole0001.vtu
+
+what_was_tested
+1) full-pole spherical shell, theta includes poles, AMRVAC pole treatment active
+2) off-pole shell, theta trimmed away from poles, theta handled by user special boundary
+3) two off-pole theta boundary variants were checked
+   a) old working variant: zero-gradient hydro + extrapolated CT magnetic field + cell-centered analytical overwrite
+   b) new analytical-continuation variant: theta ghost cells filled by Parker wind + analytical bipole continuation
+
+background_and_reason
+The original full-pole smoke test crashed immediately at iteration 0 with negative gas pressure near the south-pole ring.
+To bypass the polar singularity and diagnose the problem, the theta domain was trimmed away from the exact poles.
+This off-pole version ran stably, but then the question became whether the run is only numerically stable or also physically relaxing toward a reasonable solar-wind MHD state.
+The later analytical-continuation theta boundary was introduced to test whether a more self-consistent ghost-cell state would reduce the off-pole boundary artifacts.
+
+test_example_1_full_pole_failure
+test=pc_smoke.par
+result=failed at iteration 0
+primary_symptom=negative gas pressure, immediate abort
+location=ring near the south-pole side of the domain
+interpretation=full-pole geometry is the dominant trigger for the immediate crash
+
+test_example_2_off_pole_old_boundary
+test=pc_smoke_offpole.par with the earlier working theta special boundary
+result=ran to iteration 50 successfully
+log_end_state
+it=50
+global_time=1.96575805E-03
+dt=3.74842510E-05
+
+old_boundary_quantity_changes_between_pc_smoke_offpole0000_and_pc_smoke_offpole0001
+rho_rel_rms_change=8.126000E-02
+p_rel_rms_change=3.585716E-01
+br_rel_rms_change=3.930810E-03
+bt_rel_rms_change=3.601435E-02
+bp_rel_rms_change=3.110530E-02
+
+old_boundary_velocity_state_at_final_output
+Vr_mean=2.0421879203618371E+02 km/s
+Vr_rms=2.3537411335492305E+02 km/s
+Vr_min=-1.2052760009765625E+03 km/s
+Vr_max=6.3857556152343750E+02 km/s
+Vt_rms=1.7735398045470373E+02 km/s
+Vp_rms=2.0660247903394470E+01 km/s
+Vr_negative_fraction=1.6568072702331963E-02
+Vr_negative_count=6184 of 373248
+p_min=5.330395538294397E-07
+p_max=8.976198732852936E-03
+
+old_boundary_interpretation
+The run was numerically stable for 50 steps.
+However, it did not look like a clean Parker-like MHD relaxation.
+Magnetic-field changes stayed small, density changed only mildly, but strong transverse velocities appeared near the off-pole theta cuts and local negative Vr appeared close to the inner boundary.
+This suggested that the old off-pole theta boundary was numerically tolerable but not physically clean.
+
+test_example_3_off_pole_new_analytic_continuation_boundary
+test=pc_smoke_offpole.par after replacing theta case(3)/case(4) with Parker+bipole analytical continuation
+result=also ran to iteration 50 successfully
+log_end_state
+it=50
+global_time=1.95518216E-03
+dt=3.74904126E-05
+
+new_boundary_quantity_changes_between_pc_smoke_offpole0000_and_pc_smoke_offpole0001
+rho_rel_rms_change=8.019515E-02
+p_rel_rms_change=1.627760E+01
+Vr_rel_rms_change=3.261560E-01
+bt_rel_rms_change=3.670304E-02
+bp_rel_rms_change=3.176555E-02
+
+new_boundary_velocity_state_at_final_output
+Vr_mean=2.0443160000000000E+02 km/s
+Vr_rms=2.3537411335492305E+02 km/s approximately
+Vr_min=-1.1999262695312500E+03 km/s
+Vr_max=5.2084606933593750E+02 km/s
+Vt_rms=1.7682629949460323E+02 km/s
+Vp_rms=2.0488578381797390E+01 km/s
+Vr_negative_fraction=1.5959897976680383E-02
+Vr_negative_count=5957 of 373248
+p_min=5.330400654202094E-07
+p_max=4.456518292427063E-01
+
+new_boundary_main_anomaly
+The new analytical-continuation theta boundary produced a much stronger pressure enhancement than the old working variant.
+This pressure increase was not domain-wide.
+It was localized very close to the truncated theta boundaries and on the first radial shell above the inner boundary.
+
+peak_pressure_cell_for_new_boundary
+p_max=4.456518292427063E-01
+r=1.1096882176759828
+theta=3.0867280677967037
+phi=3.1074223204310347
+Vr=-3.0830056762695310E+02 km/s
+Vt=7.3220329284667970E+01 km/s
+Vp=-1.1887522697448730E+01 km/s
+rho=2.2832886315882206E-03
+
+symmetry_of_peak_pressure_region
+The strongest pressure cells appeared in mirrored pairs near
+theta approximately 0.050639 rad and theta approximately 3.086728 rad.
+These are exactly the north-side and south-side truncated theta caps.
+
+localization_counts_for_new_boundary
+p_gt_1e2_count=1584
+p_gt_1e2_near_theta_cut=1296
+p_gt_1e2_near_inner_r=432
+p_gt_1e2_near_both=288
+
+p_gt_1e3_count=12240
+p_gt_1e3_near_theta_cut=2160
+p_gt_1e3_near_inner_r=5184
+p_gt_1e3_near_both=288
+
+p_top1_count=3733
+p_top1_near_theta_cut=1440
+p_top1_near_inner_r=2437
+p_top1_near_both=288
+
+top_0p01_percent_pressure_cells_for_new_boundary
+count=38
+r_range=1.1096882175731920 to 1.1096891000886027
+theta_values=0.050639344952280306 and 3.086728069483355
+interpretation=the top pressure cells sit on the first radial shell and at both truncated theta caps
+
+top20_pressure_cells_excerpt_for_new_boundary
+idx=198708 p=4.456518E-01 r=1.109688 theta=3.086728 phi=3.107422 Vr=-308.301 Vt=73.220 Vp=-11.888 rho=2.283289E-03
+idx=204036 p=4.456491E-01 r=1.109688 theta=3.086728 phi=3.175763 Vr=-308.301 Vt=73.207 Vp=11.835 rho=2.283274E-03
+idx=56880  p=4.456148E-01 r=1.109689 theta=0.050639 phi=3.107422 Vr=-310.999 Vt=-44.830 Vp=-12.391 rho=2.276242E-03
+idx=62208  p=4.456097E-01 r=1.109689 theta=0.050639 phi=3.175763 Vr=-310.999 Vt=-44.835 Vp=12.434 rho=2.276230E-03
+idx=56160  p=4.452519E-01 r=1.109689 theta=0.050639 phi=2.834055 Vr=-274.290 Vt=-35.546 Vp=-144.721 rho=2.276564E-03
+idx=62928  p=4.452301E-01 r=1.109689 theta=0.050639 phi=3.449129 Vr=-274.288 Vt=-35.554 Vp=144.662 rho=2.276560E-03
+idx=198564 p=4.450807E-01 r=1.109688 theta=3.086728 phi=3.039082 Vr=-306.963 Vt=72.901 Vp=-38.170 rho=2.280248E-03
+idx=204180 p=4.450735E-01 r=1.109688 theta=3.086728 phi=3.244103 Vr=-306.964 Vt=72.922 Vp=38.292 rho=2.280233E-03
+
+physical_judgement
+1) full-pole run: not usable because it crashes immediately
+2) off-pole old boundary: numerically stable, but still shows likely boundary-driven transverse flow and local inflow near the inner boundary
+3) off-pole new analytical-continuation boundary: also numerically stable, but physically worse because it creates a strong pressure ring at the truncated theta caps on the first radial shell
+
+working_hypothesis
+The main unresolved issue is not just the cell-centered ghost state.
+The stronger evidence points to the treatment of theta-boundary staggered magnetic faces under CT.
+The later analytical-continuation attempt filled cell-centered ghost states more consistently, but the face-centered magnetic boundary still appears geometrically inconsistent enough to generate a pressure-compression ring near the theta cuts.
+
+current_best_conclusion
+At present, the off-pole shell is useful as a diagnostic configuration but cannot yet be interpreted as a clean, physically self-consistent solar-wind MHD relaxation.
+The abnormal pressure behaviour is localized to the theta-cut boundaries and the first radial shell, and should be treated as a boundary artifact until the theta CT magnetic-face boundary is reworked.

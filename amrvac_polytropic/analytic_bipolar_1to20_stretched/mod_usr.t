@@ -335,6 +335,29 @@ contains
 
   end subroutine bipolar_field
 
+  subroutine set_analytic_parker_bipole(ixI^L,ixO^L,x,w)
+    integer, intent(in) :: ixI^L,ixO^L
+    double precision, intent(in) :: x(ixI^S,1:ndim)
+    double precision, intent(inout) :: w(ixI^S,1:nw)
+
+    double precision :: A(ixI^S,1:ndim),Bcart(ixI^S,1:ndim),Bsph(ixI^S,1:ndim),xS(ixI^S,1:ndim)
+
+    w(ixO^S,mom(:))=0.d0
+    {do ix^DB=ixOmin^DB,ixOmax^DB\}
+      call cal_parker_solar_wind(x(ix^D,1), rc, vs, vout)
+      w(ix^D,rho_)  = (rhob*V_surface)/(Vout*x(ix^D,1)**2)
+      w(ix^D,mom(1))= vout*w(ix^D,rho_)
+      w(ix^D,p_)    = w(ix^D,rho_)*Tiso/(mhd_gamma-1.0d0)
+    {end do\}
+
+    xS(ixO^S,1) = x(ixO^S,1) * cos(0.50d0*dpi-x(ixO^S,2)) * cos(x(ixO^S,3))
+    xS(ixO^S,2) = x(ixO^S,1) * cos(0.50d0*dpi-x(ixO^S,2)) * sin(x(ixO^S,3))
+    xS(ixO^S,3) = x(ixO^S,1) * sin(0.50d0*dpi-x(ixO^S,2))
+    call bipolar_field(ixI^L,ixO^L,xS,A,Bcart)
+    call Cart2SphereVector(ixI^L,ixO^L,x,Bcart,Bsph)
+    w(ixO^S,mag(:))=Bsph(ixO^S,:)
+  end subroutine set_analytic_parker_bipole
+
   subroutine boundary_electric_field(ixI^L,ixO^L,qt,qdt,fE,s)
     ! specify tangential electric field at physical boundaries 
     ! to fix or drive normal magnetic field
@@ -430,6 +453,7 @@ contains
     double precision, intent(inout) :: w(ixI^S,1:nw)
     
     double precision :: Qp(ixI^S)
+    double precision :: A(ixI^S,1:ndim),Bcart(ixI^S,1:ndim),Bsph(ixI^S,1:ndim),xS(ixI^S,1:ndim)
     integer :: ix^D,ixOs^L,jxO^L,idir
     double precision :: q,q1,b0,b1,b2
     
@@ -446,7 +470,7 @@ contains
        {do ix^DB=ixOmin^DB,ixOmax^DB\}
          call cal_parker_solar_wind(x(ix^D,1), rc, vs, vout)
          w(ix^D,rho_)  = (rhob*V_surface)/(Vout*x(ix^D,1)**2)
-         w(ix^D,mom(1))= 0 !vout*w(ix^D,rho_)
+         w(ix^D,mom(1))= vout*w(ix^D,rho_)
          w(ix^D,p_)    = w(ix^D,rho_)*Tiso/(mhd_gamma-1.0d0)
        {end do\}
 
@@ -487,6 +511,15 @@ contains
              /block%surfaceC(ix1^%1ixOs^S,1)
          end do
          call mhd_face_to_center(ixO^L,block)
+
+         ! Keep the cell-centered ghost magnetic field consistent with the
+         ! analytical buried-charge bipole used in the interior initialization.
+         xS(ixO^S,1) = x(ixO^S,1) * cos(0.50d0*dpi-x(ixO^S,2)) * cos(x(ixO^S,3))
+         xS(ixO^S,2) = x(ixO^S,1) * cos(0.50d0*dpi-x(ixO^S,2)) * sin(x(ixO^S,3))
+         xS(ixO^S,3) = x(ixO^S,1) * sin(0.50d0*dpi-x(ixO^S,2))
+         call bipolar_field(ixI^L,ixO^L,xS,A,Bcart)
+         call Cart2SphereVector(ixI^L,ixO^L,x,Bcart,Bsph)
+         w(ixO^S,mag(:))=Bsph(ixO^S,:)
        else
          do ix1=ixOmax1,ixOmin1,-1
            w(ix1^%1ixO^S,mag(:))=third* &
@@ -566,71 +599,148 @@ contains
        end if
 
      case(3)
-      ! w(ixO^S,mom(1))=0.0d0
-      ! w(ixO^S,mom(2))=0.0d0
-      ! w(ixO^S,mom(3))=0.0d0
-       ! perfect conductor wall, normal magnetic field = 0
-      ! if(stagger_grid) then
-      !   do idir=1,nws
-      !     if(idir==2) cycle
-      !       ixOsmax^D=ixOmax^D;
-      !       ixOsmin^D=ixOmin^D-kr(^D,idir);
-      !       do ix2=ixOsmax2,ixOsmin2,-1
-      !          block%ws(ix2^%2ixOs^S,idir)=third*&
-      !                 (-block%ws(ix2+2^%2ixOs^S,idir)&
-      !             +4.d0*block%ws(ix2+1^%2ixOs^S,idir))
-      !       end do
-      !   end do
-      !   ixOs^L=ixO^L-kr(2,^D);
-      !   jxO^L=ixO^L+nghostcells*kr(2,^D);
-      !   block%ws(ixOs^S,2)=zero
-      !   do ix2=ixOsmax2,ixOsmin2,-1
-      !     call get_divb(w,ixI^L,ixO^L,Qp)
-      !     block%ws(ix2^%2ixOs^S,2)=Qp(ix2+1^%2ixO^S)*block%dvolume(ix2+1^%2ixO^S)&
-     !      /block%surfaceC(ix2^%2ixOs^S,2)
-      !   end do
-      !   call mhd_face_to_center(ixO^L,block)
-      ! else
-      !   do ix2=ixOmax2,ixOmin2,-1
-       !    w(ix2^%2ixO^S,mag(:))=third* &
-       !               (-w(ix2+2^%2ixO^S,mag(:)) &
-       !          +4.0d0*w(ix2+1^%2ixO^S,mag(:)))
-       !  enddo
-       !end if
-       !w(ixO^S,rho_)=w(ixOmin1:ixOmax1,ixOmax2+nghostcells:ixOmax2+1:-1,ixOmin3:ixOmax3,rho_)
+!      do ix2=ixOmax2,ixOmin2,-1
+!        w(ix2^%2ixO^S,rho_)   = w(ix2+1^%2ixO^S,rho_)
+!        w(ix2^%2ixO^S,p_)     = w(ix2+1^%2ixO^S,p_)
+!        w(ix2^%2ixO^S,mom(:)) = w(ix2+1^%2ixO^S,mom(:))
+!      end do
+!
+!      if(stagger_grid) then
+!        do idir=1,nws
+!          if(idir==2) cycle
+!          ixOsmax^D=ixOmax^D;
+!          ixOsmin^D=ixOmin^D-kr(^D,idir);
+!          do ix2=ixOsmax2,ixOsmin2,-1
+!            block%ws(ix2^%2ixOs^S,idir)=third*&
+!                   (-block%ws(ix2+2^%2ixOs^S,idir)&
+!               +4.d0*block%ws(ix2+1^%2ixOs^S,idir))
+!          end do
+!        end do
+!        ixOs^L=ixO^L-kr(2,^D);
+!        jxO^L=ixO^L+nghostcells*kr(2,^D);
+!        block%ws(ixOs^S,2)=zero
+!        do ix2=ixOsmax2,ixOsmin2,-1
+!          call get_divb(w,ixI^L,ixO^L,Qp)
+!          block%ws(ix2^%2ixOs^S,2)=Qp(ix2+1^%2ixO^S)*block%dvolume(ix2+1^%2ixO^S)&
+!            /block%surfaceC(ix2^%2ixOs^S,2)
+!        end do
+!        call mhd_face_to_center(ixO^L,block)
+!
+!        xS(ixO^S,1) = x(ixO^S,1) * cos(0.50d0*dpi-x(ixO^S,2)) * cos(x(ixO^S,3))
+!        xS(ixO^S,2) = x(ixO^S,1) * cos(0.50d0*dpi-x(ixO^S,2)) * sin(x(ixO^S,3))
+!        xS(ixO^S,3) = x(ixO^S,1) * sin(0.50d0*dpi-x(ixO^S,2))
+!        call bipolar_field(ixI^L,ixO^L,xS,A,Bcart)
+!        call Cart2SphereVector(ixI^L,ixO^L,x,Bcart,Bsph)
+!        w(ixO^S,mag(:))=Bsph(ixO^S,:)
+!      else
+!        do ix2=ixOmax2,ixOmin2,-1
+!          w(ix2^%2ixO^S,mag(:))=third*&
+!                 (-w(ix2+2^%2ixO^S,mag(:))&
+!             +4.d0*w(ix2+1^%2ixO^S,mag(:)))
+!        end do
+!      end if
+
+       ! Analytic continuation across the truncated theta boundary:
+       ! extend the same Parker wind and analytical bipolar field into the
+       ! ghost cells instead of mixing zero-gradient hydro with extrapolated B.
+       call set_analytic_parker_bipole(ixI^L,ixO^L,x,w)
+
+       if(stagger_grid) then
+         ! The centered analytical overwrite is fine for ghost cells, but the
+         ! CT theta-cut faces still need the divergence-consistent reconstruction.
+         do idir=1,nws
+           if(idir==2) cycle
+           ixOsmax^D=ixOmax^D;
+           ixOsmin^D=ixOmin^D-kr(^D,idir);
+           do ix2=ixOsmax2,ixOsmin2,-1
+             block%ws(ix2^%2ixOs^S,idir)=third*&
+                    (-block%ws(ix2+2^%2ixOs^S,idir)&
+                +4.d0*block%ws(ix2+1^%2ixOs^S,idir))
+           end do
+         end do
+         ixOs^L=ixO^L-kr(2,^D);
+         jxO^L=ixO^L+nghostcells*kr(2,^D);
+         block%ws(ixOs^S,2)=zero
+         do ix2=ixOsmax2,ixOsmin2,-1
+           call get_divb(w,ixI^L,ixO^L,Qp)
+           block%ws(ix2^%2ixOs^S,2)=Qp(ix2+1^%2ixO^S)*block%dvolume(ix2+1^%2ixO^S)&
+             /block%surfaceC(ix2^%2ixOs^S,2)
+         end do
+         call mhd_face_to_center(ixO^L,block)
+         call set_analytic_parker_bipole(ixI^L,ixO^L,x,w)
+       end if
 
      case(4)
-      ! w(ixO^S,mom(1))=0.0d0
-      ! w(ixO^S,mom(2))=0.0d0
-      ! w(ixO^S,mom(3))=0.0d0
-      ! if(stagger_grid) then
-      !   do idir=1,nws
-      !     if(idir==2) cycle
-      !       ixOsmax^D=ixOmax^D;
-      !       ixOsmin^D=ixOmin^D-kr(^D,idir);
-      !       do ix2=ixOsmin2,ixOsmax2
-      !          block%ws(ix2^%2ixOs^S,idir) = third*&
-      !                 (-block%ws(ix2-2^%2ixOs^S,idir)&
-      !             +4.d0*block%ws(ix2-1^%2ixOs^S,idir))
-      !       end do
-      !  end do
-      !   ixOs^L=ixO^L;
-      !   jxO^L=ixO^L-nghostcells*kr(2,^D);
-      !   block%ws(ixOs^S,2)=zero
-      !   do ix2=ixOsmin2,ixOsmax2
-      !     call get_divb(w,ixI^L,ixO^L,Qp)
-      !     block%ws(ix2^%2ixOs^S,2)=-Qp(ix2^%2ixO^S)*block%dvolume(ix2^%2ixO^S)&
-      !       /block%surfaceC(ix2^%2ixOs^S,2)
-      !   end do
-      !   call mhd_face_to_center(ixO^L,block)
-      ! else
-       !  do ix2=ixOmin2,ixOmax2
-      !     w(ix2^%2ixO^S,mag(:))=third* &
-      !                (-w(ix2-2^%2ixO^S,mag(:)) &
-      !           +4.0d0*w(ix2-1^%2ixO^S,mag(:)))
-      !   enddo
-      ! end if
-      !w(ixO^S,rho_)=w(ixOmin1:ixOmax1,ixOmax2-nghostcells:ixOmax2+1:-1,ixOmin3:ixOmax3,rho_)
+!      do ix2=ixOmin2,ixOmax2
+!        w(ix2^%2ixO^S,rho_)   = w(ix2-1^%2ixO^S,rho_)
+!        w(ix2^%2ixO^S,p_)     = w(ix2-1^%2ixO^S,p_)
+!        w(ix2^%2ixO^S,mom(:)) = w(ix2-1^%2ixO^S,mom(:))
+!      end do
+!
+!      if(stagger_grid) then
+!        do idir=1,nws
+!          if(idir==2) cycle
+!          ixOsmax^D=ixOmax^D;
+!          ixOsmin^D=ixOmin^D-kr(^D,idir);
+!          do ix2=ixOsmin2,ixOsmax2
+!            block%ws(ix2^%2ixOs^S,idir)=third*&
+!                   (-block%ws(ix2-2^%2ixOs^S,idir)&
+!               +4.d0*block%ws(ix2-1^%2ixOs^S,idir))
+!          end do
+!        end do
+!        ixOs^L=ixO^L;
+!        jxO^L=ixO^L-nghostcells*kr(2,^D);
+!        block%ws(ixOs^S,2)=zero
+!        do ix2=ixOsmin2,ixOsmax2
+!          call get_divb(w,ixI^L,ixO^L,Qp)
+!          block%ws(ix2^%2ixOs^S,2)=-Qp(ix2^%2ixO^S)*block%dvolume(ix2^%2ixO^S)&
+!            /block%surfaceC(ix2^%2ixOs^S,2)
+!        end do
+!        call mhd_face_to_center(ixO^L,block)
+!
+!        xS(ixO^S,1) = x(ixO^S,1) * cos(0.50d0*dpi-x(ixO^S,2)) * cos(x(ixO^S,3))
+!        xS(ixO^S,2) = x(ixO^S,1) * cos(0.50d0*dpi-x(ixO^S,2)) * sin(x(ixO^S,3))
+!        xS(ixO^S,3) = x(ixO^S,1) * sin(0.50d0*dpi-x(ixO^S,2))
+!        call bipolar_field(ixI^L,ixO^L,xS,A,Bcart)
+!        call Cart2SphereVector(ixI^L,ixO^L,x,Bcart,Bsph)
+!        w(ixO^S,mag(:))=Bsph(ixO^S,:)
+!      else
+!        do ix2=ixOmin2,ixOmax2
+!          w(ix2^%2ixO^S,mag(:))=third*&
+!                 (-w(ix2-2^%2ixO^S,mag(:))&
+!             +4.d0*w(ix2-1^%2ixO^S,mag(:)))
+!        end do
+!      end if
+
+       ! Analytic continuation across the truncated theta boundary:
+       ! extend the same Parker wind and analytical bipolar field into the
+       ! ghost cells instead of mixing zero-gradient hydro with extrapolated B.
+       call set_analytic_parker_bipole(ixI^L,ixO^L,x,w)
+
+       if(stagger_grid) then
+         ! The centered analytical overwrite is fine for ghost cells, but the
+         ! CT theta-cut faces still need the divergence-consistent reconstruction.
+         do idir=1,nws
+           if(idir==2) cycle
+           ixOsmax^D=ixOmax^D;
+           ixOsmin^D=ixOmin^D-kr(^D,idir);
+           do ix2=ixOsmin2,ixOsmax2
+             block%ws(ix2^%2ixOs^S,idir)=third*&
+                    (-block%ws(ix2-2^%2ixOs^S,idir)&
+                +4.d0*block%ws(ix2-1^%2ixOs^S,idir))
+           end do
+         end do
+         ixOs^L=ixO^L;
+         jxO^L=ixO^L-nghostcells*kr(2,^D);
+         block%ws(ixOs^S,2)=zero
+         do ix2=ixOsmin2,ixOsmax2
+           call get_divb(w,ixI^L,ixO^L,Qp)
+           block%ws(ix2^%2ixOs^S,2)=-Qp(ix2^%2ixO^S)*block%dvolume(ix2^%2ixO^S)&
+             /block%surfaceC(ix2^%2ixOs^S,2)
+         end do
+         call mhd_face_to_center(ixO^L,block)
+         call set_analytic_parker_bipole(ixI^L,ixO^L,x,w)
+       end if
      case(5)
    
      ! phi boundaries are defined by the periodic condition in AMRVAC

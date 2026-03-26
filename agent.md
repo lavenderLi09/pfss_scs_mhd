@@ -1,93 +1,262 @@
-# PFSS + SCS for AMRVAC Relaxation
+# PFSS + SCS to AMRVAC: Project Context
 
-## 目标
+## Purpose
 
-本项目的目标是：基于综合磁图计算 PFSS，再基于 PFSS 构建 SCS，并将磁场解延伸到约 10-20 个太阳半径，作为 AMRVAC 中 MHD 松弛计算的初始磁场条件。
+This project aims to build a practical pipeline from a synoptic magnetogram to an AMRVAC-ready initial magnetic field for MHD relaxation in the low corona and inner heliosphere.
 
-这份文档既作为我自己的需求摘要，也作为未来 coding agent 的项目上下文。这里只记录当前对话中已经确认的需求；尚未定下的技术细节会明确标记为待讨论。
+The intended end-to-end workflow is:
 
-## 当前已确认的技术方向
+`magnetogram -> PFSS coefficients -> SCS coefficients -> field evaluation on the AMRVAC target mesh -> AMRVAC MHD relaxation`
 
-### 1. 面向 AMRVAC 的总体流程
+This document serves two roles:
 
-优先工作流应为：
+- a compact project brief for ongoing work
+- a context file for future coding agents
 
-`magnetogram -> PFSS coefficients -> SCS coefficients -> evaluate field on AMRVAC mesh -> AMRVAC relaxation`
+It records the project direction and the debugging conclusions that have already been established. Open design choices are listed explicitly rather than hidden.
 
-也就是说，目标不是先把 PFSS/SCS 解存到一个中间均匀网格上，再插值到 AMRVAC 网格，而是尽量直接在 AMRVAC 的目标网格上求值。
+## Confirmed Technical Direction
 
-### 2. 为什么不优先采用中间均匀网格
+### 1. The target is AMRVAC initialization, not a standalone extrapolation product
 
-对于当前用途，中间均匀网格加插值不是首选，因为：
+The PFSS and SCS solutions are not being developed as independent archive products. Their main purpose here is to prepare an initial magnetic field for AMRVAC.
 
-- 会多引入一层插值误差。
-- 会削弱解析解本身的优势。
-- 对 MHD 初值来说，不利于尽可能保持较小的数值散度误差。
+That means implementation choices should be judged mainly by:
 
-因此，当前明确偏向的方案是：PFSS 和 SCS 都应尽量支持在目标网格点上直接求值，而不是依赖“先存网格、后插值”的流程。
+- consistency with the AMRVAC mesh
+- numerical cleanliness of the initial condition
+- usefulness for subsequent MHD relaxation
 
-### 3. PFSS / SCS 在目标网格上的分工
+### 2. Direct evaluation on the target AMRVAC mesh is preferred
 
-- 在 cusp/source 过渡高度以下，使用 PFSS 求值。
-- 在该过渡高度以上，使用 SCS 求值。
-- 两者最终应在同一个径向拉伸网格上进行评估，以便和 AMRVAC 的计算网格保持一致。
+The current preferred workflow is to evaluate PFSS and SCS directly on the final AMRVAC mesh whenever possible.
 
-这里的重点是“同一个目标网格”与“按半径分区调用 PFSS / SCS”，而不是分别输出两套独立网格结果。
+This is preferred over:
 
-### 4. 对 SCS 能力的明确要求
+`magnetogram -> PFSS/SCS on a uniform storage grid -> interpolation to AMRVAC`
 
-SCS 需要支持类似 PFSS `harmonics` 求值的能力，即：
+for three reasons:
 
-- 能够基于 `glm/hlm` 在任意给定的 `(r, theta, phi)` 点直接计算磁场。
-- 目标接口层面的要求是：`scs_solver` 不应只支持从预计算网格插值，也应支持直接 harmonics-based evaluation。
+- it avoids one extra interpolation layer
+- it preserves more of the benefit of the analytical or harmonic representation
+- it reduces the chance of introducing extra divergence-related noise into the MHD initial condition
 
-这里先记录行为层面的需求，不在本文件中锁定具体函数签名或实现细节。
+### 3. PFSS and SCS should share one target mesh
 
-### 5. 输出使用场景
+The intended split is:
 
-PFSS + SCS 的结果是为了构造 AMRVAC 的初始磁场条件，而不是为了单独生成一个与 AMRVAC 脱离的归档网格数据产品。
+- below the PFSS-to-SCS transition radius: evaluate the PFSS solution
+- above the transition radius: evaluate the SCS solution
 
-换句话说，后续实现应围绕“如何在 AMRVAC 网格上准备初值”展开，而不是围绕“如何导出一套独立插值网格文件”展开。
+But both should be evaluated on the same final target mesh, especially the same stretched radial mesh used by AMRVAC.
 
-### 6. 环境与代码来源约束
+The important idea is:
 
-如果系统中存在多个 `pfss` 副本，后续工作必须明确使用项目内、经过修改的本地版本，而不是误用 conda 环境中较旧的已安装版本。
+- one target mesh
+- two radial regimes
+- no separate archived grid products as the main path
 
-这意味着未来实现或 notebook 使用时，需要特别注意 import 路径优先级与实际加载来源。
+### 4. SCS should support harmonic-style direct evaluation
 
-## 对未来 agent 的直接说明
+The SCS implementation should not be limited to interpolating from a precomputed grid.
 
-未来如果继续推进该项目，默认应遵循以下理解：
+The desired capability is conceptually similar to harmonic PFSS evaluation:
 
-- 这是一个“PFSS + SCS -> AMRVAC initial condition”的问题，不只是一个独立的磁场外推问题。
-- 重点是直接在目标 mesh 上求值。
-- SCS 需要具备与 PFSS 相匹配的 harmonics 直接求值能力。
-- 讨论 mesh、`lmax`、数值方法时，应以 AMRVAC 初值构造和后续 MHD 松弛的稳定性与一致性为核心。
+- given SCS coefficients such as `glm/hlm`
+- evaluate the magnetic field directly at arbitrary `(r, theta, phi)` locations
 
-## 待后续详细讨论的技术问题
+This file does not lock down a final API signature, but it does record the behavioral requirement:
 
-以下内容目前都应视为 open questions，尚未在本项目中最终定案：
+- SCS direct pointwise evaluation is a project goal
 
-- 径向网格如何拉伸。
-- 采用哪一种 stretching law。
-- 最终的径向分辨率。
-- 最终的角向分辨率。
-- PFSS / SCS 使用的 `lmax`。
-- PFSS 与 SCS 过渡区的具体数值处理方式。
-- 初始条件是直接提供 `B`，还是转为通过 vector potential `A` 来构造。
-- 与 AMRVAC 网格对接时，是否还需要额外的散度控制策略。
+### 5. Use the project-local modified PFSS/SCS code, not an older installed copy
 
-这些问题会在后续专门讨论 mesh grids、`lmax` 与 numerical methods 时再决定；本文件不提前替这些问题下结论。
+If multiple PFSS-related packages exist on the system, project work must use the local project version rather than an outdated conda-installed copy.
 
-## 当前文档的边界
+This is important for:
 
-本文件只总结目前已经确认的需求与方向，不承担以下功能：
+- notebooks
+- scripts
+- future packaging
+- debugging imports
 
-- 不定义最终网格参数。
-- 不定义最终数值算法。
-- 不规定精确 API 签名。
-- 不替代后续关于 AMRVAC 网格、数值稳定性和实现细节的深入讨论。
+## Current Repository Structure
 
-## 一句话摘要
+The current working repository is:
 
-当前已确认的核心需求是：从综合磁图出发构建 PFSS + SCS，并以“在 AMRVAC 的同一目标拉伸网格上直接求值”为主线来准备 MHD 松弛的初始磁场；而 mesh 形式、`lmax` 和更深入的数值细节暂时保留到后续讨论中确定。
+- [pfss_scs_mhd](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd)
+
+The most relevant top-level items are:
+
+- [agent.md](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/agent.md)
+  - this context file
+- [knowledge_base.md](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/knowledge_base.md)
+  - additional project notes
+- [cursor_pfss_and_scs_model_grid_discussi.md](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/cursor_pfss_and_scs_model_grid_discussi.md)
+  - related design discussion notes
+- [references](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/references)
+  - papers and background references
+- [hmi_synoptic_maps](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/hmi_synoptic_maps)
+  - synoptic map data and plotting helpers
+- [2026_scs_relaxation](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/2026_scs_relaxation)
+  - PFSS/SCS experiments, notebooks, stretched-grid products, and local PFSS code
+- [amrvac_polytropic](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic)
+  - AMRVAC-side test problems and debug cases
+
+### `2026_scs_relaxation`
+
+This directory contains the current PFSS/SCS experimentation layer.
+
+Important contents include:
+
+- [initial_magnetic.ipynb](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/2026_scs_relaxation/initial_magnetic.ipynb)
+  - notebook for building and inspecting the initial magnetic configuration
+- [codes/pfss](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/2026_scs_relaxation/codes/pfss)
+  - project-local PFSS-related source tree
+- [Brtp_data](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/2026_scs_relaxation/Brtp_data)
+  - saved PFSS/SCS field samples
+- [rtp_stretched.npz](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/2026_scs_relaxation/rtp_stretched.npz)
+  - stretched spherical mesh data
+- [vts](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/2026_scs_relaxation/vts)
+  - VTK outputs for field inspection
+
+This directory is the main PFSS/SCS construction side of the project.
+
+### `amrvac_polytropic`
+
+This directory contains AMRVAC test cases derived from or compared against a downloaded reference setup.
+
+Important subdirectories are:
+
+- [polytropic_bipolar](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/polytropic_bipolar)
+  - downloaded reference AMRVAC case used to inspect coding patterns
+- [analytic_bipolar_1to20](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20)
+  - first clean analytical bipolar test case from `1` to `20 Rsun`
+- [analytic_bipolar_1to20_stretched](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched)
+  - main active AMRVAC debug case with stretched radial grid and staged local tests
+
+### `analytic_bipolar_1to20_stretched`
+
+This is the current AMRVAC debugging focus.
+
+Important files:
+
+- [mod_usr.t](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/mod_usr.t)
+  - user physics, initialization, boundaries, and auxiliary output
+- [amrvac.par](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/amrvac.par)
+  - main default run file
+- [pc_init.par](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/pc_init.par)
+  - initialization-only check
+- [pc_smoke.par](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/pc_smoke.par)
+  - short full-pole smoke test
+- [pc_smoke_offpole.par](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/pc_smoke_offpole.par)
+  - short off-pole smoke test
+- [run_pc_stability.sh](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/run_pc_stability.sh)
+  - single-core local runner
+- [analysis/pressure_anomaly](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/analysis/pressure_anomaly)
+  - summaries and debug records for the pressure anomaly investigation
+
+## Current AMRVAC Debugging Conclusions
+
+### 1. The radial grid is already stretched
+
+The AMRVAC setup already uses a stretched radial grid.
+
+In this project:
+
+- `stretch_dim(1)='uni'` means stretched radial spacing, not uniform radial spacing
+
+This has already been verified from AMRVAC behavior and run output.
+
+### 2. Full-pole runs are currently unstable
+
+The full-pole smoke test:
+
+- [pc_smoke.par](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/pc_smoke.par)
+
+fails immediately at the first evolution step.
+
+Observed behavior:
+
+- initialization succeeds
+- at `Iteration 0`, before completing the first full step, negative gas pressure appears
+- the failure is concentrated near the south-pole ring
+
+So the current full-pole configuration is not yet usable for physical runs.
+
+### 3. Off-pole runs are numerically stable but still boundary-sensitive
+
+The off-pole test:
+
+- [pc_smoke_offpole.par](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/pc_smoke_offpole.par)
+
+trims theta away from the exact poles and uses `special` theta boundaries.
+
+This version can run stably for at least 50 steps on one core.
+
+However, stability does not yet imply physical cleanliness.
+
+### 4. Off-pole theta boundaries are the current main difficulty
+
+Two off-pole theta boundary variants have been tested:
+
+- older working variant
+  - zero-gradient hydro
+  - extrapolated CT magnetic field
+  - centered analytical magnetic overwrite
+- newer analytical-continuation variant
+  - Parker-wind continuation in ghost cells
+  - analytical bipolar continuation in ghost cells
+
+The newer variant did **not** solve the physical-quality problem. Instead, it produced a stronger pressure anomaly.
+
+### 5. Current best interpretation of the pressure anomaly
+
+The pressure anomaly investigation is summarized in:
+
+- [physics_checks_summary.txt](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/analysis/pressure_anomaly/physics_checks_summary.txt)
+- [debug_process_report.md](/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/analysis/pressure_anomaly/debug_process_report.md)
+
+The main conclusion is:
+
+- the large pressure increase is localized near the truncated theta boundaries and the first radial shell above the inner boundary
+- it should currently be treated as a boundary artifact
+- the most likely unresolved issue is the CT staggered magnetic-face treatment at the theta-cut boundaries
+
+In short:
+
+- full-pole case: crashes
+- off-pole case: runs
+- off-pole physics: still not clean enough to call it a trustworthy solar-wind relaxation baseline
+
+## Practical Guidance For Future Agents
+
+If future work continues from this repository, the default interpretation should be:
+
+- this is not just a PFSS/SCS extrapolation project
+- it is a PFSS/SCS-to-AMRVAC initialization project
+- direct evaluation on the final mesh remains the preferred direction
+- the current active AMRVAC debugging bottleneck is theta-boundary consistency in the off-pole bipolar test
+
+Future work should be careful not to assume:
+
+- that the current off-pole AMRVAC case is physically validated
+- that full-pole stability has been solved
+- that the analytical continuation attempt fixed the theta boundary problem
+
+## Open Technical Questions
+
+The following are still open and should not be treated as finalized:
+
+- the final stretched radial mesh design for production PFSS/SCS-to-AMRVAC runs
+- the final stretching law and resolution
+- the production angular resolution
+- the final PFSS/SCS `lmax`
+- the detailed PFSS/SCS transition treatment
+- whether the production AMRVAC initialization should use direct `B` or be rebuilt through a vector potential `A`
+- what additional divergence-control strategy should be used for the final production initial condition
+- how to construct a geometrically consistent CT face magnetic boundary for off-pole AMRVAC tests
+
+## One-Sentence Summary
+
+The confirmed project direction is to construct PFSS + SCS magnetic fields and evaluate them directly on the final stretched AMRVAC mesh for MHD relaxation, while the current active debugging focus is the boundary consistency of the analytical bipolar AMRVAC test, especially the off-pole theta treatment under CT.

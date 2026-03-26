@@ -15,5 +15,13 @@ __pycache__/
 # Build artifacts from local AMRVAC runs
 amrvac_polytropic/**/amrvac
 amrvac_polytropic/**/*.mod
+amrvac_polytropic/**/data/
 amrvac_polytropic/**/data/*.lock
 amrvac_polytropic/**/data/.bipolar.log.shfp.*
+amrvac_polytropic/**/out
+
+# Local magnetic-map and coefficient data
+2026_scs_relaxation/Alm.pkl
+2026_scs_relaxation/Blm.pkl
+2026_scs_relaxation/magmaps/
+hmi_synoptic_maps/*.fits

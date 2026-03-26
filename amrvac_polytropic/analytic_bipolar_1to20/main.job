@@ -1,0 +1,21 @@
+#!/bin/bash
+#BSUB -q mpi
+#BSUB -J relaxation
+#BSUB -n 1
+#BSUB -o ./data/out.txt
+#BSUB -e ./data/err.txt
+
+cd /Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20/
+echo -n "==job started:"
+date
+#echo
+#mpirun -np 1 ./amrvac -i init.par > init.out
+echo
+#mpirun -np 960 ./amrvac -i amrvac.par > out
+mpirun -np 1 ./amrvac -i amrvac.par > out
+echo
+mpirun -np 1 ./amrvac -i init_check.par > out_init
+echo
+echo -n "==job finished:"
+date
+echo

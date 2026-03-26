@@ -1,0 +1,19 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Large generated field outputs that exceed normal GitHub limits
+*.vts
+*.npy
+*.npz
+
+# Generated logs and scratch outputs
+*.log
+*.out
+
+# Build artifacts from local AMRVAC runs
+amrvac_polytropic/**/amrvac
+amrvac_polytropic/**/*.mod
+amrvac_polytropic/**/data/*.lock
+amrvac_polytropic/**/data/.bipolar.log.shfp.*

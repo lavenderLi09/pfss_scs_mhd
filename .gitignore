@@ -1,0 +1,4 @@
+*.dat
+*.vtu
+campaigns_off_2270/off_2270/initial/OFF_combined_lmax10_q1.008_nr600.bin
+**/OFF_combined_lmax10_q1.008_nr600.bin

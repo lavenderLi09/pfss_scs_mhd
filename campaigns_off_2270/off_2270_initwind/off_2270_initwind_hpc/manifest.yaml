@@ -1,0 +1,20 @@
+name: off_2270_initwind_hpc
+campaign: campaigns_off_2270
+parent_case: off_2270_initwind
+role: dt_cfl_diagnostic
+amrvac_dir: /Users/zhaoyan/Documents/codes/amrvac3.2
+main_par: amrvac.par
+extra_par_files:
+  - diag_nodat_1step.par
+  - diag_nodat_2steps.par
+  - diag_nodat_4steps.par
+  - diag_nodat_steps.par
+  - diag_speed_regrid8.par
+  - ring_on.par
+submit_script: submit.sh
+output_prefixes:
+  - data/amr_probe
+analysis_dir: analysis
+figs_dir: figs
+logs_dir: logs
+notes_file: notes.md

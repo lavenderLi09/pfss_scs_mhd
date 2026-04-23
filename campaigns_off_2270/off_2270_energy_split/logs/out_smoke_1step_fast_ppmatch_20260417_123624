@@ -1,0 +1,201 @@
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ |         __  __ ____ ___        _    __  __ ______     ___    ____         |
+ |        |  \/  |  _ \_ _|      / \  |  \/  |  _ \ \   / / \  / ___|        |
+ |        | |\/| | |_) | |_____ / _ \ | |\/| | |_) \ \ / / _ \| |            |
+ |        | |  | |  __/| |_____/ ___ \| |  | |  _ < \ V / ___ \ |___         |
+ |        |_|  |_|_|  |___|   /_/   \_\_|  |_|_| \_\ \_/_/   \_\____|        |
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ [DBG] usr_init: enter
+ [DBG] usr_init: set_coordinate_system done
+ WARNING: turn off parabolic TC when using hyperbolic TC
+ Use Colgan & Feldman (2008) cooling curve
+ This version only till 10000 K, beware for floor T treatment
+ [DBG] usr_init: mhd_activate done
+ Reading amrvac.par
+ Reading smoke_1step_fast_ppmatch.par
+ 
+ Output type | tsavestart |  dtsave   | ditsave | itsave(1) | tsave(1)
+         log | 0.000E+00  | ********* |      1  |      0    | *********
+      normal | 0.000E+00  | ********* | ******  |      0    | *********
+       slice | 0.000E+00  | ********* | ******  | ******    | *********
+   collapsed | 0.000E+00  | ********* | ******  | ******    | *********
+    analysis | 0.000E+00  | ********* | ******  | ******    | *********
+ 
+ Stretched dimension            1
+ Using stretched grid with qs=   1.0160640000000001        1.0080000000000000     
+         and first cell sizes=  0.19048460512662330        9.4862851158676945E-002
+         Domain size (cells): 120 96 192 
+                Level one dx: 0.158E+00 0.327E-01 0.327E-01 
+           Refine estimation: Lohner's scheme
+ Note, Grid is reconstructed once every           8 iterations
+           restart_from_file:  undefined
+                  converting: F
+
+ Will apply pi-periodic conditions at northpole!
+ Will apply pi-periodic conditions at southpole!
+ [DBG] initglobaldata_usr: enter
+ [DBG] initglobaldata_usr: read_usr_params done
+ qstretch level:   1.0080000000000000     
+ Empirical heating config (Fan-2017 style):
+   heat_on= T
+   F[cgs]=   974000.00000000000       LH[cgs]=   19480000000.000000     
+   r-window=   1.0000000000000000        11.470000000000001     
+   B-weight= F  alpha=   0.0000000000000000       Bref[G]=   5.0000000000000000     
+   heat floor/cap=   0.0000000000000000        100.00000000000000     
+   debug_trace= T
+ [DBG] initglobaldata_usr: read_initial_magnetic_field start
+ [DBG] read_initial_magnetic_field: open start
+ [DBG] read_initial_magnetic_field: shape read done
+ [DBG] read_initial_magnetic_field: data read done
+ MHD simulation initialized by amrvac PFSS model
+   Initial Data Shape:            3         600          96         192
+   Load Initial Magnetic field data from: ../off_2270/initial/OFF_combined_lmax10_q1.008_nr600.bin                                            
+ First element before normalization:    3.3831248598263128     
+ Last  element before normalization:    0.0000000000000000     
+     min, max values of initial B (normalized):  -9.5941115325078119        15.413793539236206     
+ [DBG] initglobaldata_usr: read_initial_magnetic_field done
+ [DBG] initglobaldata_usr: read_pp_inner_bc start
+ [DBG] read_pp_inner_bc: open start
+ [DBG] read_pp_inner_bc: shape read done
+ [DBG] read_pp_inner_bc: data read done
+ [DBG] initglobaldata_usr: read_pp_inner_bc done
+ PP inner BC loaded: ../off_2270_highstream/I1_ppbound/initial/pp_inner_bc_rho_Tiso_p85.bin
+   rhob_map min/max:   9.9989277473543192E-002  0.92102182989665871     
+   Tiso_map min/max:   2.0088957809049330        2.0100000000136951     
+ [DBG] set_background_polytropic_state_pp call=           1  r_in=   1.0000000000000000       rhob_loc=  0.10000000000000001       Tiso_loc=   2.0099999999999998       gamma=   1.6666666999999999     
+   sample (ith,iph)=           1           1  Tiso_loc=   2.0099999999999998       V_surface_loc=   5.4341027082192989E-002  rho(r=1)=  0.10000000000000001       rhob_loc=  0.10000000000000001     
+ [DBG] set_background_polytropic_state_pp call=           2  r_in=   1.0000000000000000       rhob_loc=  0.10000000000000001       Tiso_loc=   2.0099999999999998       gamma=   1.6666666999999999     
+   sample (ith,iph)=          48          96  Tiso_loc=   2.0099999999999998       V_surface_loc=   5.4341027082192989E-002  rho(r=1)=  0.10000000000000001       rhob_loc=  0.10000000000000001     
+ [DBG] set_background_polytropic_state_pp call=           3  r_in=   1.0000000000000000       rhob_loc=  0.10000000000000001       Tiso_loc=   2.0099999999999998       gamma=   1.6666666999999999     
+   sample (ith,iph)=          96         192  Tiso_loc=   2.0099999999999998       V_surface_loc=   5.4341027082192989E-002  rho(r=1)=  0.10000000000000001       rhob_loc=  0.10000000000000001     
+ [DBG] initglobaldata_usr: cal_parker_solar_wind(surface) start
+ [DBG] initglobaldata_usr: cal_parker_solar_wind(surface) done
+ [DBG] initglobaldata_usr: allocate pbc/rbc start
+ [DBG] initglobaldata_usr: allocate pbc/rbc done
+ PSW at            2 ghost layer
+ Velocity at current layer   3.2454203062832303E-002
+ number density at current layer  0.20369955491798111     
+ p_ at current layer  0.61415412737000663     
+ PSW at            1 ghost layer
+ Velocity at current layer   1.6729174370701948E-002
+ number density at current layer  0.49201435383938213     
+ p_ at current layer   1.4834232026545771     
+ number density at maxmal r   5.2399685049970424E-006
+ velocity ar maxmal r   2.5943857192446362     
+ [DBG] initglobaldata_usr: exit
+ [DBG] initonegrid_usr call=           1
+ Relax a solor wind model with politropic MHD
+ User Tiso(MK):    2.0099999999999998     
+ V_surface(unit_velocity):    5.4341027082192989E-002
+ [DBG] set_background_polytropic_state_pp call=           4  r_in=   1.0474314255793384       rhob_loc=  0.10000000000000001       Tiso_loc=   2.0099999999999998       gamma=   1.6666666999999999     
+ [DBG] set_background_polytropic_state_pp call=           5  r_in=   1.1426737281426500       rhob_loc=  0.10000000000000001       Tiso_loc=   2.0099999999999998       gamma=   1.6666666999999999     
+ [DBG] initonegrid_usr done call=           1  rho[min,max]=   7.0022483203601186E-004   7.3105976256474040E-002  p_[min,max]=   2.1111777630296877E-003  0.22041450739254384     
+ [DBG] initonegrid_usr call=           2
+ [DBG] initonegrid_usr done call=           2  rho[min,max]=   1.2895515771096496E-004   6.2463793997647268E-004  p_[min,max]=   3.8879978105857031E-004   1.8832832948649002E-003
+ [DBG] initonegrid_usr call=           3
+ [DBG] initonegrid_usr done call=           3  rho[min,max]=   7.0022483203601186E-004  0.35331824682667290       p_[min,max]=   2.1111777593492763E-003   1.0652544609269536     
+ [DBG] initonegrid_usr call=           4
+ [DBG] initonegrid_usr done call=           4  rho[min,max]=   1.2895515771096496E-004   3.0188500743038456E-003  p_[min,max]=   3.8879978038077660E-004   9.1018325189964819E-003
+ [DBG] initonegrid_usr call=           5
+ [DBG] initonegrid_usr done call=           5  rho[min,max]=   7.0022483203601186E-004   7.3105976256474040E-002  p_[min,max]=   2.1111777630296877E-003  0.22041450739254384     
+ [DBG] specialbound_usr enter call=           1  iB=           1  qt=   0.0000000000000000     
+ PP/PKSW inner BC applied (iB=1) at qt=   0.0000000000000000     
+   rho min/max:  0.14067368239654129       0.31012943096538836     
+   mom1 min/max:   5.9840078996194011E-003   7.3608966132305102E-003
+   p_(eint) min/max:  0.42413113121901541       0.93504018760863650     
+ [DBG] specialbound_usr exit  call=           1  iB=           1
+ [DBG] specialbound_usr enter call=           2  iB=           1  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=           2  iB=           1
+ [DBG] specialbound_usr enter call=           3  iB=           1  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=           3  iB=           1
+ [DBG] specialbound_usr enter call=           4  iB=           1  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=           4  iB=           1
+ [DBG] specialbound_usr enter call=           5  iB=           1  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=           5  iB=           1
+ [DBG] specialbound_usr enter call=           6  iB=           1  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=           6  iB=           1
+ [DBG] specialbound_usr enter call=           7  iB=           1  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=           7  iB=           1
+ [DBG] specialbound_usr enter call=           8  iB=           1  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=           8  iB=           1
+ [DBG] specialbound_usr enter call=           9  iB=           1  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=           9  iB=           1
+ [DBG] specialbound_usr enter call=          10  iB=           1  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=          10  iB=           1
+ [DBG] specialbound_usr enter call=          11  iB=           1  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=          11  iB=           1
+ [DBG] specialbound_usr enter call=          12  iB=           1  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=          12  iB=           1
+ [DBG] specialbound_usr enter call=          13  iB=           1  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=          13  iB=           1
+ [DBG] specialbound_usr enter call=          14  iB=           1  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=          14  iB=           1
+ [DBG] specialbound_usr enter call=          15  iB=           1  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=          15  iB=           1
+ [DBG] specialbound_usr enter call=          16  iB=           1  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=          16  iB=           1
+ [DBG] specialbound_usr enter call=          17  iB=           2  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=          17  iB=           2
+ [DBG] specialbound_usr enter call=          18  iB=           2  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=          18  iB=           2
+ [DBG] specialbound_usr enter call=          19  iB=           2  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=          19  iB=           2
+ [DBG] specialbound_usr enter call=          20  iB=           2  qt=   0.0000000000000000     
+ [DBG] specialbound_usr exit  call=          20  iB=           2
+ -------------------------------------------------------------------------------
+ Startup phase took :             1.057 sec
+ -------------------------------------------------------------------------------
+ Start integrating, print status every  3.00E+01 seconds
+   #        it        time          dt  wc-time(s)
+ [DBG] gravity first call done, g[min,max]=  -12.809321138331072       -1.5683392865741452     
+   #         0  0.0000E+00  2.7102E-05  1.4013E-01
+ -------------------------------------------------------------------------------
+ Saving visual data. Coordinate directions and variable names are:
+           1 r               
+           2 Theta           
+           3 Phi             
+           4 rho             
+           5 v1              
+           6 v2              
+           7 v3              
+           8 p               
+           9 b1              
+          10 b2              
+          11 b3              
+          12 psi             
+          13 q               
+          14 Br              
+          15 Bt              
+          16 Bp              
+          17 Jr              
+          18 Jt              
+          19 Jp              
+          20 divB            
+          21 pth             
+          22 Vr              
+          23 Lr              
+          24 Lt              
+          25 Lp              
+ time =   0.0000000000000000     
+ -------------------------------------------------------------------------------
+ empirical_heating_source activated
+   coef_norm=  0.94045114953206299       Lh_norm=  0.28008626887131560     
+ [DBG] empirical_heating_source first call qt=   0.0000000000000000       qdt=   2.7102471696649658E-005  calls=           1
+ Total timeloop took        :       11.459 sec
+ Time spent on AMR          :        0.000 sec
+                  Percentage:         0.00 %
+ Time spent on IO in loop   :        2.873 sec
+                  Percentage:        25.07 %
+ Time spent on ghost cells  :        0.157 sec
+                  Percentage:         1.37 %
+ Time spent on computing    :        8.430 sec
+                  Percentage:        73.56 %
+ Cells updated / proc / sec :    5.790E+05
+ Total time spent on IO     :        5.525 sec
+ Total timeintegration took :       14.112 sec
+   #         1   2.710E-05   2.710E-05   1.146E+01
+ -------------------------------------------------------------------------------
+ Finished AMRVAC in :            15.168 sec
+ -------------------------------------------------------------------------------

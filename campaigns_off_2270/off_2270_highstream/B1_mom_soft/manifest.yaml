@@ -1,0 +1,14 @@
+name: B1_mom_soft
+campaign: campaigns_off_2270
+parent_case: off_2270
+role: highstream_boundary_softening
+amrvac_dir: /Users/zhaoyan/Documents/codes/amrvac3.2
+main_par: amrvac.par
+extra_par_files: []
+submit_script: submit.sh
+output_prefixes:
+  - data/amr_probe
+analysis_dir: analysis
+figs_dir: figs
+logs_dir: logs
+notes_file: notes.md

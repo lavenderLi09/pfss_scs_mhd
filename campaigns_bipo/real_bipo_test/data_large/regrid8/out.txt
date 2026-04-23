@@ -1,0 +1,66 @@
+==job started:Tue Mar 31 14:08:33 CST 2026
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@whale009>
+Subject: Job 193800: <bipo_AMR> in cluster <hpcCluster> Exited
+
+Job <bipo_AMR> was submitted from host <whale361> by user <guoyang> in cluster <hpcCluster> at Tue Mar 31 14:08:31 2026
+Job was executed on host(s) <64*whale009>, in queue <mpi>, as user <guoyang> in cluster <hpcCluster> at Tue Mar 31 14:08:31 2026
+                            <64*whale053>
+                            <64*whale010>
+                            <64*whale025>
+</share/home/guoyang> was used as the home directory.
+</share/home/guoyang/liyihua/outer_corona_relaxation/bipolar_hpc_test> was used as the working directory.
+Started at Tue Mar 31 14:08:31 2026
+Terminated at Tue Mar 31 14:13:49 2026
+Results reported at Tue Mar 31 14:13:49 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q mpi
+#BSUB -J bipo_AMR
+#BSUB -n 256
+#BSUB -o ./data_large/out.txt
+#BSUB -e ./data_large/err.txt
+
+cd /share/home/guoyang/liyihua/outer_corona_relaxation/bipolar_hpc_test
+echo -n "==job started:"
+date
+#echo
+#mpirun -np 1 ./amrvac -i init.par > init.out
+echo
+mpirun -np 256 ./amrvac -i amrvac_amr.par > out
+#mpirun -np 256 ./amrvac -i resume.par -resume > resume_out
+echo -n "==job finished:"
+date
+echo
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with signal termination: 9.
+
+Resource usage summary:
+
+    CPU time :                                   75563.00 sec.
+    Max Memory :                                 439198 MB
+    Average Memory :                             352923.81 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              267
+    Max Threads :                                525
+    Run time :                                   318 sec.
+    Turnaround time :                            318 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <./data_large/err.txt> for stderr output of this job.
+

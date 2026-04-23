@@ -1,0 +1,720 @@
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ |         __  __ ____ ___        _    __  __ ______     ___    ____         |
+ |        |  \/  |  _ \_ _|      / \  |  \/  |  _ \ \   / / \  / ___|        |
+ |        | |\/| | |_) | |_____ / _ \ | |\/| | |_) \ \ / / _ \| |            |
+ |        | |  | |  __/| |_____/ ___ \| |  | |  _ < \ V / ___ \ |___         |
+ |        |_|  |_|_|  |___|   /_/   \_\_|  |_|_| \_\ \_/_/   \_\____|        |
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ Reading amrvac.par
+ 
+ Output type | tsavestart |  dtsave   | ditsave | itsave(1) | tsave(1)
+         log | 0.000E+00  | ********* |      1  |      0    | *********
+      normal | 0.000E+00  | 0.200E-01 | ******  |      0    | *********
+       slice | 0.000E+00  | ********* | ******  | ******    | *********
+   collapsed | 0.000E+00  | ********* | ******  | ******    | *********
+    analysis | 0.000E+00  | ********* | ******  | ******    | *********
+ 
+ Stretched dimension            1
+ Using stretched grid with qs=   1.0160640000000001        1.0080000000000000        1.0039920318408906        1.0019940278469182        1.0009965173999948     
+         and first cell sizes=   2.5810177198628318E-003   1.2853673903699362E-003   6.4140344369991462E-004   3.2038229623977644E-004   1.6011137123620128E-004
+         Domain size (cells): 600 96 192 
+                Level one dx: 0.317E-01 0.327E-01 0.327E-01 
+           Refine estimation: Lohner's scheme
+ Note, Grid is reconstructed once every           3 iterations
+           restart_from_file:  undefined
+                  converting: F
+
+ Will apply pi-periodic conditions at northpole!
+ Will apply pi-periodic conditions at southpole!
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ MHD simulation initialized by amrvac PFSS model
+   Initial Data Shape:            3         600          96         192
+   Load Initial Magnetic field data from: ./initial/OFF_combined_lmax10_q1.008_nr600.bin                                                      
+ First element before normalization:    3.3831248598263128     
+ Last  element before normalization:    0.0000000000000000     
+     min, max values of initial B (normalized):  -9.5941115325078119        15.413793539236206     
+ PSW at            2 ghost layer
+ Velocity at current layer   5.4003744877990763E-002
+ number density at current layer  0.10087962659510180     
+ p_ at current layer  0.20276804945615459     
+ PSW at            1 ghost layer
+ Velocity at current layer   5.3664862420587191E-002
+ number density at current layer  0.10177638693138065     
+ p_ at current layer  0.20457053773207509     
+ number density at maxmal r   5.2399685049970424E-006
+ velocity ar maxmal r   2.5943857192446362     
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 0 PID 2567818 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 1 PID 2567819 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 2 PID 2567820 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 3 PID 2567821 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 4 PID 2567822 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 5 PID 2567823 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 6 PID 2567824 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 7 PID 2567825 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 8 PID 2567826 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 11 PID 2567829 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 12 PID 2567830 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 14 PID 2567832 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 15 PID 2567833 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 16 PID 2567834 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 17 PID 2567835 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 18 PID 2567836 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 19 PID 2567837 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 20 PID 2567838 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 21 PID 2567839 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 22 PID 2567840 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 23 PID 2567841 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 25 PID 2567843 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 26 PID 2567844 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 27 PID 2567845 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 29 PID 2567847 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 30 PID 2567848 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 31 PID 2567849 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 32 PID 2567850 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 33 PID 2567851 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 34 PID 2567852 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 35 PID 2567853 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 36 PID 2567854 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 37 PID 2567855 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 38 PID 2567856 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 39 PID 2567857 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 40 PID 2567858 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 41 PID 2567859 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 42 PID 2567860 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 43 PID 2567861 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 44 PID 2567862 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 45 PID 2567863 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 46 PID 2567864 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 47 PID 2567865 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 48 PID 2567866 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 49 PID 2567867 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 50 PID 2567868 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 51 PID 2567869 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 52 PID 2567870 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 53 PID 2567871 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 54 PID 2567872 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 55 PID 2567873 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 56 PID 2567874 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 57 PID 2567875 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 58 PID 2567876 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 59 PID 2567877 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 60 PID 2567878 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 61 PID 2567879 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 62 PID 2567880 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 63 PID 2567881 RUNNING AT whale033
+=   KILLED BY SIGNAL: 9 (Killed)
+===================================================================================

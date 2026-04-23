@@ -1,0 +1,16 @@
+#!/bin/bash
+#BSUB -q mpi
+#BSUB -J bipolar_pc
+#BSUB -n 1
+#BSUB -o ./data/out.txt
+#BSUB -e ./data/err.txt
+
+cd /Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/analytic_bipolar_1to20_stretched/
+echo -n "==job started:"
+date
+echo
+OMP_NUM_THREADS=1 ./run_pc_stability.sh all > out_pc_stability 2>&1
+echo
+echo -n "==job finished:"
+date
+echo

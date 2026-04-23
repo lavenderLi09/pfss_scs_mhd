@@ -1,0 +1,157 @@
+[bogon:29260] shmem: mmap: an error occurred while determining whether or not /var/folders/rv/5p0qf41n16q806fnfmhv2flh0000gn/T//ompi.bogon.501/jf.0/226295808/sm_segment.bogon.501.d7d0000.0 could be created.
+[bogon][[3453,0],0][btl_tcp_component.c:1021:mca_btl_tcp_component_create_listen] bind() failed: Operation not permitted (1)
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ |         __  __ ____ ___        _    __  __ ______     ___    ____         |
+ |        |  \/  |  _ \_ _|      / \  |  \/  |  _ \ \   / / \  / ___|        |
+ |        | |\/| | |_) | |_____ / _ \ | |\/| | |_) \ \ / / _ \| |            |
+ |        | |  | |  __/| |_____/ ___ \| |  | |  _ < \ V / ___ \ |___         |
+ |        |_|  |_|_|  |___|   /_/   \_\_|  |_|_| \_\ \_/_/   \_\____|        |
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ Reading pc_smoke.par
+ 
+ Output type | tsavestart |  dtsave   | ditsave | itsave(1) | tsave(1)
+         log | 0.000E+00  | ********* |      5  |      0    | *********
+      normal | 0.000E+00  | ********* | ******  |      0    | *********
+       slice | 0.000E+00  | ********* | ******  | ******    | *********
+   collapsed | 0.000E+00  | ********* | ******  | ******    | *********
+    analysis | 0.000E+00  | ********* | ******  | ******    | *********
+ 
+ Stretched dimension            1
+ Using stretched grid with qs=   1.0100249999999997        1.0049999999999999     
+         and first cell sizes=  0.44086916430183015       0.21988486997597514     
+         Domain size (cells): 72 72 72 
+                Level one dx: 0.264E+00 0.436E-01 0.873E-01 
+           Refine estimation: Lohner's scheme
+ Note, Grid is reconstructed once every           3 iterations
+           restart_from_file:  undefined
+                  converting: F
+
+ Will apply pi-periodic conditions at northpole!
+ Will apply pi-periodic conditions at southpole!
+ q_para   6.9550000000000006E+034
+ d_para   2500000000.0000000     
+ L_para   1000000000.0000000     
+ Relax a solor wind model with politropic MHD
+ User Tiso(MK):    2.0000000000000000     
+ V_surface(unit_velocity):    5.4341027082192989E-002
+ -------------------------------------------------------------------------------
+ Startup phase took :             1.035 sec
+ -------------------------------------------------------------------------------
+ Start integrating, print status every  3.00E+01 seconds
+   #        it        time          dt  wc-time(s)
+   #         0  0.0000E+00  1.8300E-05  1.9817E-02
+ -------------------------------------------------------------------------------
+ Saving visual data. Coordinate directions and variable names are:
+           1 r               
+           2 Theta           
+           3 Phi             
+           4 rho             
+           5 v1              
+           6 v2              
+           7 v3              
+           8 p               
+           9 b1              
+          10 b2              
+          11 b3              
+          12 br              
+          13 bt              
+          14 bp              
+          15 J1              
+          16 J2              
+          17 J3              
+          18 CW              
+          19 fi              
+          20 Vr              
+          21 Vt              
+          22 Vp              
+ time =   0.0000000000000000     
+ -------------------------------------------------------------------------------
+ Error: small value of gas pressure  -5417326.1510846391       encountered when call mhd_get_pthermal
+ Iteration:            0  Time:    0.0000000000000000     
+ Location:    1.1099424349879876        3.1197760379398640        1.6144295580947547     
+ Cell number:            5          16          11
+ rho:    2.4740669258680455E-003
+ m1:  -0.39426598187842438     
+ m2:   -162.04238169708285     
+ m3:    3210.0429476161603     
+ e:   -108346523.02169269     
+ b1:   -4.5732528425308647     
+ b2:    8.7138610157062563E-002
+ b3:   0.21040253399927655     
+ Saving status at the previous time step
+ Error: small value of gas pressure  -918224.51988214895       encountered when call mhd_get_pthermal
+ Iteration:            0  Time:    0.0000000000000000     
+ Location:    1.1099424349879876        3.1197760379398640        2.3125612588924866     
+ Cell number:            5          16           7
+ rho:    2.4837929913225846E-003
+ m1:   0.97652747502017034     
+ m2:   -102.03704303907486     
+ m3:   -752.15304017008145     
+ e:   -18364490.397642963     
+ b1:   -4.3694176545609809     
+ b2:   -4.8482750974545005E-002
+ b3:   0.15561577801785584     
+ Saving status at the previous time step
+ Error: small value of gas pressure  -21657.084630221339       encountered when call mhd_get_pthermal
+ Iteration:            0  Time:    0.0000000000000000     
+ Location:    1.5519137722005723        3.1197760379398640        2.3998277214922030     
+ Cell number:            7          16           8
+ rho:    4.1372157869920285E-004
+ m1:   0.62421076855726809     
+ m2:   -2.6068105337943606     
+ m3:   -31.644855293091702     
+ e:   -433141.69260442641     
+ b1:   -1.6019943768991765     
+ b2:   -6.0887267677581826E-003
+ b3:    3.7571027145874417E-002
+ Saving status at the previous time step
+ Error: small value of gas pressure  -21656.353701024273       encountered when call mhd_get_pthermal
+ Iteration:            0  Time:    0.0000000000000000     
+ Location:    1.5519137722005723        3.1197760379398640        3.8833575856873828     
+ Cell number:            7          16          13
+ rho:    4.1372157551720473E-004
+ m1:   0.62421091900844339     
+ m2:   -2.6068115718461016     
+ m3:    31.644852800835210     
+ e:   -433127.07402048510     
+ b1:   -1.6019943756979165     
+ b2:   -6.0887267753394992E-003
+ b3:   -3.7571027143894903E-002
+ Saving status at the previous time step
+ Error: small value of gas pressure  -918225.90541532810       encountered when call mhd_get_pthermal
+ Iteration:            0  Time:    0.0000000000000000     
+ Location:    1.1099424349879876        3.1197760379398640        3.9706240482870991     
+ Cell number:            5          16          14
+ rho:    2.4837929839206562E-003
+ m1:   0.97652821170684656     
+ m2:   -102.03705039503845     
+ m3:    752.15316423012700     
+ e:   -18364518.108306546     
+ b1:   -4.3694176556341606     
+ b2:   -4.8482750978868172E-002
+ b3:  -0.15561577804532936     
+ Saving status at the previous time step
+ Error: small value of gas pressure  -5417324.6315728500       encountered when call mhd_get_pthermal
+ Iteration:            0  Time:    0.0000000000000000     
+ Location:    1.1099424349879876        3.1197760379398640        4.6687557490848315     
+ Cell number:            5          16          10
+ rho:    2.4740669441871092E-003
+ m1:  -0.39426636898614531     
+ m2:   -162.04238133491211     
+ m3:   -3210.0430852680279     
+ e:   -108346492.63145691     
+ b1:   -4.5732528450447782     
+ b2:    8.7138610159249522E-002
+ b3:  -0.21040253395533459     
+ Saving status at the previous time step
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 0 in communicator MPI_COMM_WORLD
+  Proc: [[3453,0],0]
+  Errorcode: 2
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------

@@ -1,0 +1,2 @@
+dat_cells,dat_rho_min,dat_rho_max,dat_e_min,dat_e_max,dat_rho_nonfinite,dat_e_nonfinite,dat_rho_nonpos,dat_e_nonpos,vtu_cells,vtu_rho_nonfinite,vtu_p_nonfinite,vtu_vr_nonfinite,vtu_rho_nonpos,vtu_p_nonpos,vtu_vr_min,vtu_vr_max
+11059200.0,1.049778228909211e-05,0.09964799512844433,0.00026691838776761,4.005143183364772,0.0,0.0,0.0,0.0,11059200.0,0.0,0.0,0.0,0.0,0.0,16.220638275146484,388.6339416503906

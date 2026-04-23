@@ -1,0 +1,65 @@
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ |         __  __ ____ ___        _    __  __ ______     ___    ____         |
+ |        |  \/  |  _ \_ _|      / \  |  \/  |  _ \ \   / / \  / ___|        |
+ |        | |\/| | |_) | |_____ / _ \ | |\/| | |_) \ \ / / _ \| |            |
+ |        | |  | |  __/| |_____/ ___ \| |  | |  _ < \ V / ___ \ |___         |
+ |        |_|  |_|_|  |___|   /_/   \_\_|  |_|_| \_\ \_/_/   \_\____|        |
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ Reading amrvac.par
+ Reading ringavg_poleamr2_test.par
+ Reading ringavg_nodat_1step.par
+ Reading ringavg_full_off.par
+ 
+ Output type | tsavestart |  dtsave   | ditsave | itsave(1) | tsave(1)
+         log | 0.000E+00  | ********* |      1  |      0    | *********
+      normal | 0.000E+00  | ********* | ******  | ******    | *********
+       slice | 0.000E+00  | ********* | ******  | ******    | *********
+   collapsed | 0.000E+00  | ********* | ******  | ******    | *********
+    analysis | 0.000E+00  | ********* | ******  | ******    | *********
+ 
+ Stretched dimension            1
+ Using stretched grid with qs=   1.0160640000000001        1.0080000000000000        1.0039920318408906     
+         and first cell sizes=   2.5810177198628318E-003   1.2853673903699362E-003   6.4140344369991462E-004
+         Domain size (cells): 600 96 192 
+                Level one dx: 0.317E-01 0.327E-01 0.327E-01 
+           Refine estimation: Lohner's scheme
+           restart_from_file:  undefined
+                  converting: F
+
+ Will apply pi-periodic conditions at northpole!
+ Will apply pi-periodic conditions at southpole!
+ qstretch level:   1.0080000000000000     
+ qstretch level:   1.0080000000000000     
+ MHD simulation initialized by amrvac PFSS model
+   Initial Data Shape:            3         600          96         192
+   Load Initial Magnetic field data from: ./initial/OFF_combined_lmax10_q1.008_nr600.bin                                                      
+ First element before normalization:    3.3831248598263128     
+ Last  element before normalization:    0.0000000000000000     
+     min, max values of initial B (normalized):  -9.5941115325078119        15.413793539236206     
+ PSW at            2 ghost layer
+ Velocity at current layer   5.4003744877990763E-002
+ number density at current layer  0.10087962659510180     
+ p_ at current layer  0.20276804945615459     
+ PSW at            1 ghost layer
+ Velocity at current layer   5.3664862420587191E-002
+ number density at current layer  0.10177638693138065     
+ p_ at current layer  0.20457053773207509     
+ number density at maxmal r   5.2399685049970424E-006
+ velocity ar maxmal r   2.5943857192446362     
+ Relax a solor wind model with politropic MHD
+ User Tiso(MK):    2.0099999999999998     
+ V_surface(unit_velocity):    5.4341027082192989E-002
+POLE_AMR_DEBUG forced refine level=1 thmin=  1.0281E-01 thmax=  3.1871E+00
+ -------------------------------------------------------------------------------
+ Startup phase took :           130.345 sec
+ -------------------------------------------------------------------------------
+ Start integrating, print status every  3.00E+01 seconds
+   #        it        time          dt  wc-time(s)
+CFL_DEBUG ring=F dirmax=   7.3541E+03   3.3446E+02   4.0855E+04 cmaxtot_max=   4.8532E+04
+DT_SOURCE_DEBUG cfl=   6.0612E-06 phys=   6.7580E-03 usr=   1.0000E+99
+DT_CFL_LIMITER igrid=2543 qdt=  6.0612E-06 cmaxtot=  8.2492E+04
+DT_CFL_LIMITER dirmax=   7.6442E+04   2.9982E+03   3.0737E+03
+DT_CFL_LIMITER xmin=   1.0000E+00   1.3090E+00   2.3562E+00 xmax=   1.0133E+00   1.5708E+00   2.6180E+00
+   #         0  0.0000E+00  6.0612E-06  8.0013E+01

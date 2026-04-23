@@ -1,0 +1,216 @@
+==job started:Tue Mar 31 22:51:46 CST 2026
+
+==job finished:Tue Mar 31 22:52:37 CST 2026
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@whale054>
+Subject: Job 194375: <bipo_AMR> in cluster <hpcCluster> Done
+
+Job <bipo_AMR> was submitted from host <whale361> by user <guoyang> in cluster <hpcCluster> at Tue Mar 31 22:51:46 2026
+Job was executed on host(s) <64*whale054>, in queue <mpi>, as user <guoyang> in cluster <hpcCluster> at Tue Mar 31 22:51:46 2026
+                            <64*whale005>
+                            <64*whale003>
+                            <64*whale014>
+                            <64*whale051>
+</share/home/guoyang> was used as the home directory.
+</share/home/guoyang/liyihua/outer_corona_relaxation/off_2270> was used as the working directory.
+Started at Tue Mar 31 22:51:46 2026
+Terminated at Tue Mar 31 22:52:44 2026
+Results reported at Tue Mar 31 22:52:44 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q mpi
+#BSUB -J bipo_AMR
+#BSUB -n 320
+#BSUB -o ./data/out.txt
+#BSUB -e ./data/err.txt
+
+cd /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270
+echo -n "==job started:"
+date
+#echo
+#mpirun -np 1 ./amrvac -i init.par > init.out
+echo
+mpirun -np 320 ./amrvac -i amrvac.par > out
+#mpirun -np 256 ./amrvac -i resume.par -resume > resume_out
+echo -n "==job finished:"
+date
+echo
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   14768.00 sec.
+    Max Memory :                                 96635 MB
+    Average Memory :                             82801.50 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              7
+    Max Threads :                                9
+    Run time :                                   49 sec.
+    Turnaround time :                            58 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <./data/err.txt> for stderr output of this job.
+
+==job started:Fri Apr  3 16:37:00 CST 2026
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@whale055>
+Subject: Job 196564: <off_LTS> in cluster <hpcCluster> Exited
+
+Job <off_LTS> was submitted from host <whale361> by user <guoyang2> in cluster <hpcCluster> at Fri Apr  3 16:36:58 2026
+Job was executed on host(s) <64*whale055>, in queue <mpi>, as user <guoyang2> in cluster <hpcCluster> at Fri Apr  3 16:37:00 2026
+                            <64*whale050>
+                            <64*whale005>
+                            <64*whale043>
+                            <64*whale034>
+</share/home/guoyang2> was used as the home directory.
+</share/home/guoyang2/liyihua/outer_corona_relaxation/off_2270_lts_32_linde> was used as the working directory.
+Started at Fri Apr  3 16:37:00 2026
+Terminated at Fri Apr  3 16:37:17 2026
+Results reported at Fri Apr  3 16:37:17 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q mpi
+#BSUB -J off_LTS
+#BSUB -n 320
+#BSUB -o ./data/out.txt
+#BSUB -e ./data/err.txt
+
+cd /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270_lts_32_linde
+echo -n "==job started:"
+date
+#echo
+#mpirun -np 1 ./amrvac -i init.par > init.out
+echo
+mpirun -np 320 ./amrvac -i amrvac_smoke.par > out
+#mpirun -np 256 ./amrvac -i resume.par -resume > resume_out
+echo -n "==job finished:"
+date
+echo
+
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with signal termination: 9.
+
+Resource usage summary:
+
+    CPU time :                                   744.00 sec.
+    Max Memory :                                 92056 MB
+    Average Memory :                             75235.16 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              7
+    Max Threads :                                9
+    Run time :                                   17 sec.
+    Turnaround time :                            19 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <./data/err.txt> for stderr output of this job.
+
+==job started:Fri Apr  3 16:37:29 CST 2026
+
+==job finished:Fri Apr  3 16:39:01 CST 2026
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@whale010>
+Subject: Job 196565: <off_LTS> in cluster <hpcCluster> Done
+
+Job <off_LTS> was submitted from host <whale361> by user <guoyang2> in cluster <hpcCluster> at Fri Apr  3 16:37:28 2026
+Job was executed on host(s) <64*whale010>, in queue <mpi>, as user <guoyang2> in cluster <hpcCluster> at Fri Apr  3 16:37:29 2026
+                            <64*whale056>
+                            <64*whale023>
+                            <64*whale021>
+                            <64*whale003>
+                            <64*whale004>
+                            <64*whale001>
+                            <64*whale015>
+                            <64*whale016>
+                            <64*whale019>
+                            <64*whale046>
+                            <64*whale037>
+                            <64*whale027>
+                            <64*whale044>
+                            <64*whale060>
+</share/home/guoyang2> was used as the home directory.
+</share/home/guoyang2/liyihua/outer_corona_relaxation/off_2270_lts_32_linde> was used as the working directory.
+Started at Fri Apr  3 16:37:29 2026
+Terminated at Fri Apr  3 16:39:01 2026
+Results reported at Fri Apr  3 16:39:01 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q mpi
+#BSUB -J off_LTS
+#BSUB -n 960
+#BSUB -o ./data/out.txt
+#BSUB -e ./data/err.txt
+
+cd /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270_lts_32_linde
+echo -n "==job started:"
+date
+#echo
+#mpirun -np 1 ./amrvac -i init.par > init.out
+echo
+mpirun -np 960 ./amrvac -i amrvac_smoke.par > out
+#mpirun -np 256 ./amrvac -i resume.par -resume > resume_out
+echo -n "==job finished:"
+date
+echo
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   79180.00 sec.
+    Max Memory :                                 2111708 MB
+    Average Memory :                             859649.81 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   2 MB
+    Max Processes :                              917
+    Max Threads :                                1815
+    Run time :                                   92 sec.
+    Turnaround time :                            93 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <./data/err.txt> for stderr output of this job.
+

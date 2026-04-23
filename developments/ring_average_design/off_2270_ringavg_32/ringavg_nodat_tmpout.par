@@ -1,0 +1,12 @@
+&filelist
+  base_filename = '/tmp/ringavg_nodat/off'
+  autoconvert = .false.
+  saveprim = .false.
+  nwauxio = 0
+/
+
+&savelist
+  dtsave_dat = 1.0d99
+  ditsave_dat = 100000000
+  itsave(1,2) = 100000000
+/

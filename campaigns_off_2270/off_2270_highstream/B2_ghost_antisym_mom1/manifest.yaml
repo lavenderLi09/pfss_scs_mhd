@@ -1,0 +1,15 @@
+name: B2_ghost_antisym_mom1
+campaign: campaigns_off_2270
+parent_case: off_2270_highstream/B1_mom_soft
+role: highstream_antisym_ghost
+amrvac_dir: /Users/zhaoyan/Documents/codes/amrvac3.2
+main_par: amrvac.par
+extra_par_files:
+  - b2_smoke_1step.par
+submit_script: submit.sh
+output_prefixes:
+  - data/amr_probe
+analysis_dir: analysis
+figs_dir: figs
+logs_dir: logs
+notes_file: notes.md

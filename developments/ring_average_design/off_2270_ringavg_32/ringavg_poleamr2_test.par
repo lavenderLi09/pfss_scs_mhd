@@ -1,0 +1,4 @@
+&meshlist
+  refine_max_level = 2
+  ditregrid = 1
+/

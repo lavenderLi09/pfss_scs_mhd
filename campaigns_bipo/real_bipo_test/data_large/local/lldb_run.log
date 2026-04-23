@@ -1,0 +1,4 @@
+(lldb) target create "/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/real_bipo_test/data_large/local/amrvac"
+Current executable set to '/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/real_bipo_test/data_large/local/amrvac' (arm64).
+(lldb) run -i amrvac.par
+error: process exited with status -1 (no such process)

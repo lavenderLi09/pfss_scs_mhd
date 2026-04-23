@@ -1,0 +1,15 @@
+#!/bin/bash
+#BSUB -q mpi
+#BSUB -J off_LTS
+#BSUB -n 960
+#BSUB -o ./data/out.txt
+#BSUB -e ./data/err.txt
+
+cd /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270_lts_32_linde
+echo -n "==job started:"
+date
+echo
+mpirun -np 960 ./amrvac -i amrvac_smoke.par > out
+echo -n "==job finished:"
+date
+echo

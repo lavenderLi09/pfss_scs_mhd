@@ -1,0 +1,43 @@
+Test archive: bipolar_hpc_test jb-driven AMR run
+Date: 2026-03-27
+
+Case directory:
+/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/bipolar_hpc_test
+
+Archived files:
+- mod_usr.t
+- hpc_pilot_offpole_jb_50.par
+
+Purpose:
+- keep dynamic AMR active while replacing the old Br/B sheet forcing
+- test whether a stricter |J|*Delta/|B| sheet criterion can avoid the earlier NaN onset
+
+Parameter changes relative to hpc_pilot_offpole_d2_50.par:
+- base_filename: 'data/hpc_pilot_offpole_d2_50' -> 'data_jb_50/hpc_pilot_offpole_jb_50'
+- ditregrid: kept at 2
+- added amr_jb_eta_max_min=1.0
+- added amr_jb_eta_mean_min=0.3
+
+AMR logic changes in mod_usr.t:
+- kept force_inner in safe-theta inner region
+- kept force_sheet within r <= amr_r_sheet_max and safe-theta
+- removed the equatorial-angle restriction from force_sheet
+- removed the Br/B-based sheet trigger
+- replaced it with a block criterion based on eta_JB = |J|*Delta/|B|
+- Delta is taken as the current minimum physical grid scale among:
+  dr, r*dtheta, r*sin(theta)*dphi
+- force_sheet now requires both:
+  max(eta_JB) >= amr_jb_eta_max_min
+  mean(eta_JB) >= amr_jb_eta_mean_min
+
+Other key run controls kept the same:
+- ditsave_log=1
+- ditsave_dat=2
+- it_max=50
+- refine_max_level=2
+- typedivbfix='ct'
+
+Notes:
+- mod_usr.t archived here is the exact post-edit file used for this test
+- outputs for this run are written to:
+  /Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/bipolar_hpc_test/data_jb_50

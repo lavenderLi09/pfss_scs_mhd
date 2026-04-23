@@ -1,0 +1,15 @@
+run_label: split_timestep_entry
+case: I1_ppbound_B0split_ab
+run_mode: serial only
+changes_for_this_run:
+- it_max: 1 -> 2 (enter timestepping)
+- keep no dat/vtu policy:
+  - autoconvert=.false.
+  - convert=.false.
+  - dtsave_dat=1.d99
+  - ditsave_dat=1000000000
+  - itsave(1,1)=1000000000
+  - itsave(1,2)=1000000000
+log_targets:
+- data/b0split_timestep.out
+- data/b0split_timestep.err

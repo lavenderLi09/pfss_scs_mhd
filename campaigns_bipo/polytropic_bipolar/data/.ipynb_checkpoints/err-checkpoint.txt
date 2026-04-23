@@ -1,0 +1,555 @@
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 1
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 4
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 12
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 14
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 22
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 5
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 19
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 23
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 9
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 13
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 20
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 0
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 8
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 6
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 10
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 11
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 2
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 3
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 15
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 21
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 7
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 18
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 16
+application called MPI_Abort(MPI_COMM_WORLD, -2147483648) - process 17
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#0  0x2AD26F620697
+#1  0x2AD26F620CDE
+#2  0x2AD2700B33EF
+#0  0x2B43E5009697
+#1  0x2B43E5009CDE
+#2  0x2B43E5A9C3EF
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#0  0x2AB437FA2697
+#1  0x2AB437FA2CDE
+#2  0x2AB438A353EF
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#0  0x2AFFCF307697
+#1  0x2AFFCF307CDE
+#2  0x2AFFCFD9A3EF
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#0  0x2B6F8C857697
+#1  0x2B6F8C857CDE
+#2  0x2B6F8D2EA3EF
+#0  0x2B707EE14697
+#1  0x2B707EE14CDE
+#2  0x2B707F8A73EF
+#0  0x2B71D086B697
+#1  0x2B71D086BCDE
+#2  0x2B71D12FE3EF
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#0  0x2ABD75E94697
+#1  0x2ABD75E94CDE
+#2  0x2ABD769273EF
+#0  0x2B5D7454B697
+#1  0x2B5D7454BCDE
+#2  0x2B5D74FDE3EF
+#0  0x2B8F64BEA697
+#1  0x2B8F64BEACDE
+#2  0x2B8F6567D3EF
+#0  0x2AAB96EB9697
+#1  0x2AAB96EB9CDE
+#2  0x2AAB9794C3EF
+#0  0x2AD15D22D697
+#1  0x2AD15D22DCDE
+#2  0x2AD15DCC03EF
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#0  0x2AD291712697
+#1  0x2AD291712CDE
+#2  0x2AD2921A53EF
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#0  0x2BA185B4A697
+#0  0x2B54A5634697
+#1  0x2B54A5634CDE
+#2  0x2B54A60C73EF
+#1  0x2BA185B4ACDE
+#2  0x2BA1865DD3EF
+#0  0x2B9A62483697
+#1  0x2B9A62483CDE
+#2  0x2B9A62F163EF
+#0  0x2B938DDC3697
+#1  0x2B938DDC3CDE
+#2  0x2B938E8563EF
+#0  0x2AC23550B697
+#1  0x2AC23550BCDE
+#2  0x2AC235F9E3EF
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#0  0x2AD835DE9697
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#1  0x2AD835DE9CDE
+#2  0x2AD83687C3EF
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#0  0x2B0CCE4B4697
+#1  0x2B0CCE4B4CDE
+#2  0x2B0CCEF473EF
+#6  0x41967D in MAIN__ at amrvac.f:146
+#6  0x41967D in MAIN__ at amrvac.f:146
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#0  0x2B24892E5697
+#1  0x2B24892E5CDE
+#2  0x2B2489D783EF
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#0  0x2ADCEAC02697
+#1  0x2ADCEAC02CDE
+#2  0x2ADCEB6953EF
+#0  0x2AAEB6171697
+#1  0x2AAEB6171CDE
+#2  0x2AAEB6C043EF
+#0  0x2B7A2AC04697
+#1  0x2B7A2AC04CDE
+#2  0x2B7A2B6973EF
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#6  0x41967D in MAIN__ at amrvac.f:146
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#6  0x41967D in MAIN__ at amrvac.f:146
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA5E in __mod_usr_MOD_initonegrid_usr at mod_usr.f:257 (discriminator 28)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#6  0x41967D in MAIN__ at amrvac.f:146
+#4  0x7126C7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7128CB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#0  0x2AAD69A42697
+#1  0x2AAD69A42CDE
+#2  0x2AAD6A4D53EF
+#3  0x2AAD69B14AFA
+#4  0x2AAD69B172D4
+#5  0x2AAD69B17DDE
+#6  0x42C724 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:235
+#7  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#8  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#9  0x41967D in MAIN__ at amrvac.f:146
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#0  0x2B0CD5AF2697
+#1  0x2B0CD5AF2CDE
+#2  0x2B0CD65853EF
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#0  0x2B275EFF1697
+#1  0x2B275EFF1CDE
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#2  0x2B275FA843EF
+#0  0x2AE1ADA34697
+#1  0x2AE1ADA34CDE
+#2  0x2AE1AE4C73EF
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#0  0x2AD533B0B697
+#1  0x2AD533B0BCDE
+#2  0x2AD53459E3EF
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#0  0x2B6A53E08697
+#1  0x2B6A53E08CDE
+#2  0x2B6A5489B3EF
+
+#0  0x2B281082B697
+#1  0x2B281082BCDE
+#2  0x2B28112BE3EF
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#0  0x2AB176AAA697
+#0  0x2AB346AA1697
+#1  0x2AB346AA1CDE
+#1  0x2AB176AAACDE
+#2  0x2AB3475343EF
+#2  0x2AB17753D3EF
+#0  0x2AD67A50C697
+#1  0x2AD67A50CCDE
+#2  0x2AD67AF9F3EF
+#0  0x2B0E56A42697
+#1  0x2B0E56A42CDE
+#2  0x2B0E574D53EF
+#0  0x2B006263B697
+#1  0x2B006263BCDE
+#2  0x2B00630CE3EF
+#0  0x2B3A8C0EA697
+#1  0x2B3A8C0EACDE
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#2  0x2B3A8CB7D3EF
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#0  0x2B9043D28697
+#1  0x2B9043D28CDE
+#2  0x2B90447BB3EF
+#0  0x2B619FD2C697
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#1  0x2B619FD2CCDE
+#2  0x2B61A07BF3EF
+
+Program received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.
+
+Backtrace for this error:
+#0  0x2B21BEB76697
+#0  0x2B507B3FE697
+#1  0x2B21BEB76CDE
+#1  0x2B507B3FECDE
+#2  0x2B21BF6093EF
+#2  0x2B507BE913EF
+#0  0x2B1F30EEC697
+#1  0x2B1F30EECCDE
+#2  0x2B1F3197F3EF
+#0  0x2B7AD209B697
+#1  0x2B7AD209BCDE
+#2  0x2B7AD2B2E3EF
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#0  0x2B02D5F9A697
+#1  0x2B02D5F9ACDE
+#0  0x2AC2F3F61697
+#0  0x2B350CF3F697
+#1  0x2B350CF3FCDE
+#2  0x2B350D9D23EF
+#0  0x2B3E0BDAD697
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#2  0x2B02D6A2D3EF
+#1  0x2AC2F3F61CDE
+#1  0x2B3E0BDADCDE
+#2  0x2AC2F49F43EF
+#2  0x2B3E0C8403EF
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#0  0x2B0D9CE5B697
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#1  0x2B0D9CE5BCDE
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#2  0x2B0D9D8EE3EF
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#6  0x41967D in MAIN__ at amrvac.f:146
+#6  0x41967D in MAIN__ at amrvac.f:146
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146
+#3  0x42BA24 in __mod_usr_MOD_initonegrid_usr at mod_usr.f:260 (discriminator 28)
+#4  0x7127B7 in __mod_initialize_amr_MOD_initial_condition at mod_initialize_amr.f:66 (discriminator 14)
+#5  0x7129BB in __mod_initialize_amr_MOD_initlevelone at mod_initialize_amr.f:39 (discriminator 4)
+#6  0x41967D in MAIN__ at amrvac.f:146

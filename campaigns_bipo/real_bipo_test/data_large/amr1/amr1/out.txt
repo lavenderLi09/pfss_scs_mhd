@@ -1,0 +1,65 @@
+==job started:Wed Apr  1 16:56:45 CST 2026
+
+==job finished:Wed Apr  1 17:10:54 CST 2026
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@whale272>
+Subject: Job 194968: <bipo_AMR> in cluster <hpcCluster> Done
+
+Job <bipo_AMR> was submitted from host <whale361> by user <guoyang> in cluster <hpcCluster> at Wed Apr  1 16:56:43 2026
+Job was executed on host(s) <64*whale272>, in queue <mpi>, as user <guoyang> in cluster <hpcCluster> at Wed Apr  1 16:56:44 2026
+</share/home/guoyang> was used as the home directory.
+</share/home/guoyang/liyihua/outer_corona_relaxation/bipolar_hpc_test> was used as the working directory.
+Started at Wed Apr  1 16:56:44 2026
+Terminated at Wed Apr  1 17:10:55 2026
+Results reported at Wed Apr  1 17:10:55 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q mpi
+#BSUB -J bipo_AMR
+#BSUB -n 64
+#BSUB -o ./data_large/amr1/out.txt
+#BSUB -e ./data_large/amr1/err.txt
+
+cd /share/home/guoyang/liyihua/outer_corona_relaxation/bipolar_hpc_test
+echo -n "==job started:"
+date
+#echo
+#mpirun -np 1 ./amrvac -i init.par > init.out
+echo
+mpirun -np 64 ./amrvac -i amrvac_joverb_theta_window.par > out
+#mpirun -np 256 ./amrvac -i resume.par -resume > resume_out
+echo -n "==job finished:"
+date
+echo
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   62803.00 sec.
+    Max Memory :                                 85250 MB
+    Average Memory :                             84342.02 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              72
+    Max Threads :                                138
+    Run time :                                   851 sec.
+    Turnaround time :                            852 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <./data_large/amr1/err.txt> for stderr output of this job.
+

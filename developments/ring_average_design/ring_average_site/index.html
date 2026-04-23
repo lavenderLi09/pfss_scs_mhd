@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ring-Average in AMRVAC · 原理与实现</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="bg-orb bg-orb-a"></div>
+    <div class="bg-orb bg-orb-b"></div>
+    <header class="hero reveal">
+      <p class="kicker">MPI-AMRVAC 3.2 · Spherical MHD</p>
+      <h1>Ring-Average：数值原理与 AMRVAC 实现</h1>
+      <p class="hero-sub">
+        这份页面系统说明极区 CFL 问题、Ring-Average 的核心公式，以及我们在
+        <code>amrvac3.2_ring_average</code> 中的两条落地路径：
+        <strong>CFL 口径</strong> 与 <strong>reconstruct 前平均</strong>。
+      </p>
+      <div class="pill-row">
+        <span class="pill">CFL-only path</span>
+        <span class="pill">Full-path V1 (PLM/Limiter 前)</span>
+        <span class="pill">non-staggered / cell-centered</span>
+      </div>
+    </header>
+
+    <main class="layout">
+      <nav class="toc reveal">
+        <a href="#problem">1. 极区问题</a>
+        <a href="#math">2. 公式与思想</a>
+        <a href="#algorithm">3. 算法流程</a>
+        <a href="#amrvac">4. AMRVAC 改动点</a>
+        <a href="#params">5. 参数与开关</a>
+        <a href="#results">6. 测试结论</a>
+        <a href="#diff">7. CFL-only vs Full-path</a>
+        <a href="#limits">8. 局限与下一步</a>
+      </nav>
+
+      <article class="content">
+        <section id="problem" class="card reveal">
+          <h2>1. 极区 CFL 问题是什么</h2>
+          <p>
+            球坐标里方位向网格尺度为
+            <code>Δsφ = r sin(θ) Δφ</code>。在靠近极区
+            (<code>θ → 0, π</code>) 时，<code>sin(θ)</code> 很小，导致
+            <code>Δsφ</code> 极小，从而把显式时间步长 <code>Δt</code> 卡得很小。
+          </p>
+          <pre class="eq">Δt ≤ C_cfl / max_cells( Σ_d [ c_d / Δs_d ] )</pre>
+          <p>
+            这里如果 <code>cφ / Δsφ</code> 很大，就可能主导限步。Ring-Average
+            的核心就是把极区的“最薄 φ 单元口径”替换成“chunk 后的有效口径”。
+          </p>
+        </section>
+
+        <section id="math" class="card reveal">
+          <h2>2. Ring-Average 的核心公式</h2>
+          <h3>2.1 有效尺度</h3>
+          <pre class="eq">Δsφ,eff = Nchunk · Δsφ</pre>
+          <p>
+            <code>Nchunk</code> 是在极区沿 φ 合并的 chunk 大小（通常取 2 的幂并受
+            <code>Nmax</code> 限制）。
+          </p>
+
+          <h3>2.2 守恒平均</h3>
+          <pre class="eq">Ū_k = (1 / Nk) · Σ_{i ∈ chunk k} U_i</pre>
+          <p>
+            先在 chunk 上做守恒量平均，再用平均后的状态做界面重构或通量评估。
+            这样做的目标不是“强行加速波速”，而是改变极区离散口径，避免被最薄小格主导。
+          </p>
+
+          <h3>2.3 我们当前 V1 的 chunk 规则</h3>
+          <pre class="eq">ratio = max(1, Δsθ / Δsφ)
+k = clamp( floor(log2(ratio)), 0, kmax )
+Nchunk = min(Nφ_local, 2^k)</pre>
+          <p>
+            实现中对尺度使用 <code>abs(Δsθ)</code> 与 <code>abs(Δsφ)</code>
+            以避免符号导致误判。
+          </p>
+        </section>
+
+        <section id="algorithm" class="card reveal">
+          <h2>3. 算法流程（当前实现）</h2>
+          <ol>
+            <li>判断是否位于 spherical 3D 的 φ 重构方向，且在极帽内。</li>
+            <li>根据 <code>Δsθ/Δsφ</code> 与 <code>polar_ring_max_chunk</code> 计算 <code>Nchunk</code>。</li>
+            <li><code>w (primitive) → wcons (conserved)</code>。</li>
+            <li>在每个 φ-chunk 上对 <code>1:nwflux</code> 做守恒平均。</li>
+            <li><code>wcons → primitive</code> 写回，再走原 limiter 重构。</li>
+          </ol>
+          <p class="note">
+            这版是 <strong>average-then-reconstruct</strong>，并未替换原有 limiter。
+          </p>
+        </section>
+
+        <section id="amrvac" class="card reveal">
+          <h2>4. 在 AMRVAC 中我们改了哪些位置</h2>
+          <div class="codegrid">
+            <div>
+              <h3>参数定义</h3>
+              <pre><code>src/mod_global_parameters.t
+  logical :: polar_ring_evolve</code></pre>
+            </div>
+            <div>
+              <h3>输入参数</h3>
+              <pre><code>src/io/mod_input_output.t
+  /paramlist/ ... polar_ring_evolve
+  polar_ring_evolve = .false. (default)</code></pre>
+            </div>
+            <div>
+              <h3>CFL 路径</h3>
+              <pre><code>src/mod_dt.t
+  get_courant_ds():
+    Δsφ -> Δsφ,eff = Nchunk * Δsφ</code></pre>
+            </div>
+            <div>
+              <h3>重构路径</h3>
+              <pre><code>src/mod_finite_volume.t
+  reconstruct_LR():
+    call apply_polar_ring_average_primitive(...)</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section id="params" class="card reveal">
+          <h2>5. 参数开关</h2>
+          <pre><code>&amp;paramlist
+  polar_ring_average          = .true.   ! 开启 CFL 有效口径
+  polar_ring_evolve           = .true.   ! 开启重构前平均
+  polar_ring_theta_cap_north  = 0.10d0   ! 北极帽(弧度)
+  polar_ring_theta_cap_south  = 0.00d0   ! 南极帽(弧度)
+  polar_ring_max_chunk        = 32
+/</code></pre>
+          <p>
+            如果只想做 CFL 放宽而不改演化路径，可将
+            <code>polar_ring_evolve = .false.</code>。
+          </p>
+        </section>
+
+        <section id="results" class="card reveal">
+          <h2>6. 我们这组实验里看到的结果</h2>
+          <ul>
+            <li>
+              在 baseline 与 pole-AMR2 测试里，<code>RING_DEBUG</code> 均显示 ring 命中，且
+              <code>dirmax_phi</code> 明显下降。
+            </li>
+            <li>
+              但全局最小 <code>dt</code> 仍常由径向项主导（<code>dirmax(1)</code> 最大），因此
+              <code>dt</code> 不一定提升。
+            </li>
+            <li>
+              这并不代表 ring 无效，而是说明这批状态下真正 bottleneck 不在 φ 项。
+            </li>
+          </ul>
+        </section>
+
+        <section id="diff" class="card reveal">
+          <h2>7. CFL-only 与 Full-path 的区别</h2>
+          <div class="split">
+            <div>
+              <h3>CFL-only</h3>
+              <p>
+                只改 <code>dt</code> 判据口径，不改界面状态。等价于“允许走更大步”，数值解演化本身不变。
+              </p>
+            </div>
+            <div>
+              <h3>Full-path V1</h3>
+              <p>
+                在极区 φ 重构前先做 chunk 平均，再用原 limiter（当前 case 为 vanleer/PLM）
+                重构。会影响演化，但仍是简化版。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="limits" class="card reveal">
+          <h2>8. 当前局限与下一步</h2>
+          <ul>
+            <li>目前只覆盖 non-staggered / cell-centered 路径。</li>
+            <li>chunk 平均是块内局部实现，不是全局 ring 通信版本。</li>
+            <li>重构目前是“先平均，再原 limiter”，尚未做完整 ring-PLM/PPM 面状态构造。</li>
+            <li>下一步可做：全局 ring 分组、CT 路径兼容、守恒通量级一致性实现。</li>
+          </ul>
+          <p class="footer-note">
+            页面位置：
+            <code>/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/ring_average_design/ring_average_site/index.html</code>
+          </p>
+        </section>
+      </article>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

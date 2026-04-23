@@ -1,0 +1,86 @@
+[bogon:10156] shmem: mmap: an error occurred while determining whether or not /var/folders/rv/5p0qf41n16q806fnfmhv2flh0000gn/T//ompi.bogon.501/jf.0/2528772096/sm_segment.bogon.501.96ba0000.0 could be created.
+[bogon][[38586,0],0][btl_tcp_component.c:1021:mca_btl_tcp_component_create_listen] bind() failed: Operation not permitted (1)
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ |         __  __ ____ ___        _    __  __ ______     ___    ____         |
+ |        |  \/  |  _ \_ _|      / \  |  \/  |  _ \ \   / / \  / ___|        |
+ |        | |\/| | |_) | |_____ / _ \ | |\/| | |_) \ \ / / _ \| |            |
+ |        | |  | |  __/| |_____/ ___ \| |  | |  _ < \ V / ___ \ |___         |
+ |        |_|  |_|_|  |___|   /_/   \_\_|  |_|_| \_\ \_/_/   \_\____|        |
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ Reading hpc_pilot_init_offpole.par
+ 
+ Output type | tsavestart |  dtsave   | ditsave | itsave(1) | tsave(1)
+         log | 0.000E+00  | ********* |      5  |      0    | *********
+      normal | 0.000E+00  | ********* | ******  |      0    | *********
+       slice | 0.000E+00  | ********* | ******  | ******    | *********
+   collapsed | 0.000E+00  | ********* | ******  | ******    | *********
+    analysis | 0.000E+00  | ********* | ******  | ******    | *********
+ 
+ Stretched dimension            1
+ Using stretched grid with qs=   1.0100249999999997        1.0049999999999999        1.0024968827881711     
+         and first cell sizes=  0.31014778385525832       0.15468717399264756        7.7247148458612969E-002
+         Domain size (cells): 96 96 96 
+                Level one dx: 0.198E+00 0.321E-01 0.654E-01 
+           Refine estimation: Lohner's scheme
+ Note, Grid is reconstructed once every           2 iterations
+           restart_from_file:  undefined
+                  converting: F
+
+ There is no northpole!
+ There is no southpole!
+ q_para   6.9550000000000006E+034
+ d_para   2500000000.0000000     
+ L_para   1000000000.0000000     
+ Relax a solor wind model with politropic MHD
+ User Tiso(MK):    2.0000000000000000     
+ V_surface(unit_velocity):    5.4341027082192989E-002
+ -------------------------------------------------------------------------------
+ Startup phase took :            14.359 sec
+ -------------------------------------------------------------------------------
+ Start integrating, print status every  3.00E+01 seconds
+   #        it        time          dt  wc-time(s)
+   #         0  0.0000E+00  0.0000E+00  1.3726E-01
+ -------------------------------------------------------------------------------
+ Saving visual data. Coordinate directions and variable names are:
+           1 r               
+           2 Theta           
+           3 Phi             
+           4 rho             
+           5 v1              
+           6 v2              
+           7 v3              
+           8 p               
+           9 b1              
+          10 b2              
+          11 b3              
+          12 br              
+          13 bt              
+          14 bp              
+          15 J1              
+          16 J2              
+          17 J3              
+          18 CW              
+          19 fi              
+          20 Vr              
+          21 Vt              
+          22 Vp              
+ time =   0.0000000000000000     
+ -------------------------------------------------------------------------------
+ Total timeloop took        :        2.615 sec
+ Time spent on AMR          :        0.000 sec
+                  Percentage:         0.00 %
+ Time spent on IO in loop   :        2.478 sec
+                  Percentage:        94.75 %
+ Time spent on ghost cells  :        0.000 sec
+                  Percentage:         0.00 %
+ Time spent on computing    :        0.137 sec
+                  Percentage:         5.25 %
+ Cells updated / proc / sec :    0.000E+00
+ Total time spent on IO     :        2.478 sec
+ Total timeintegration took :        2.615 sec
+   #         0   0.000E+00   0.000E+00   2.615E+00
+ -------------------------------------------------------------------------------
+ Finished AMRVAC in :            16.974 sec
+ -------------------------------------------------------------------------------

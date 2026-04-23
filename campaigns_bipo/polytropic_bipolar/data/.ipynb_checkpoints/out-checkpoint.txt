@@ -1,0 +1,325 @@
+==job started:Wed Feb 26 19:06:16 CST 2025
+
+==job finished:Wed Feb 26 19:06:16 CST 2025
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@c47n08>
+Subject: Job 13576108: <relaxation> in cluster <njucluster> Done
+
+Job <relaxation> was submitted from host <c01n01> by user <guoyang2> in cluster <njucluster> at Wed Feb 26 19:06:14 2025
+Job was executed on host(s) <24*c47n08>, in queue <mpi>, as user <guoyang2> in cluster <njucluster> at Wed Feb 26 19:06:15 2025
+</share/home/guoyang2> was used as the home directory.
+</share/home/guoyang2/liyihua/polytropic_bipolar> was used as the working directory.
+Started at Wed Feb 26 19:06:15 2025
+Terminated at Wed Feb 26 19:06:19 2025
+Results reported at Wed Feb 26 19:06:19 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q mpi
+#BSUB -J relaxation
+#BSUB -n 24
+#BSUB -o ./data/out.txt
+#BSUB -e ./data/err.txt
+
+cd /share/home/guoyang2/liyihua/polytropic_bipolar/
+echo -n "==job started:"
+date
+#echo
+#mpirun -np 1 ./amrvac -i init.par > init.out
+echo
+#mpirun -np 960 ./amrvac -i amrvac.par > out
+mpirun -np 24 ./amrvac -i amrvac.par > out
+echo -n "==job finished:"
+date
+echo
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   1.00 sec.
+    Max Memory :                                 7 MB
+    Average Memory :                             7.00 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              1
+    Max Threads :                                2
+    Run time :                                   3 sec.
+    Turnaround time :                            5 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <./data/err.txt> for stderr output of this job.
+
+==job started:Wed Feb 26 19:42:23 CST 2025
+
+==job finished:Wed Feb 26 19:42:24 CST 2025
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@c26n01>
+Subject: Job 13576151: <relaxation> in cluster <njucluster> Done
+
+Job <relaxation> was submitted from host <c01n01> by user <guoyang2> in cluster <njucluster> at Wed Feb 26 19:42:21 2025
+Job was executed on host(s) <24*c26n01>, in queue <mpi>, as user <guoyang2> in cluster <njucluster> at Wed Feb 26 19:42:23 2025
+</share/home/guoyang2> was used as the home directory.
+</share/home/guoyang2/liyihua/polytropic_bipolar> was used as the working directory.
+Started at Wed Feb 26 19:42:23 2025
+Terminated at Wed Feb 26 19:42:27 2025
+Results reported at Wed Feb 26 19:42:27 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q mpi
+#BSUB -J relaxation
+#BSUB -n 24
+#BSUB -o ./data/out.txt
+#BSUB -e ./data/err.txt
+
+cd /share/home/guoyang2/liyihua/polytropic_bipolar/
+echo -n "==job started:"
+date
+#echo
+#mpirun -np 1 ./amrvac -i init.par > init.out
+echo
+#mpirun -np 960 ./amrvac -i amrvac.par > out
+mpirun -np 24 ./amrvac -i amrvac.par > out
+echo -n "==job finished:"
+date
+echo
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   0.16 sec.
+    Max Memory :                                 -
+    Average Memory :                             -
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Run time :                                   3 sec.
+    Turnaround time :                            6 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <./data/err.txt> for stderr output of this job.
+
+==job started:Wed Feb 26 19:46:45 CST 2025
+
+==job finished:Wed Feb 26 19:46:46 CST 2025
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@c26n06>
+Subject: Job 13576162: <relaxation> in cluster <njucluster> Done
+
+Job <relaxation> was submitted from host <c01n01> by user <guoyang2> in cluster <njucluster> at Wed Feb 26 19:46:44 2025
+Job was executed on host(s) <24*c26n06>, in queue <mpi>, as user <guoyang2> in cluster <njucluster> at Wed Feb 26 19:46:44 2025
+</share/home/guoyang2> was used as the home directory.
+</share/home/guoyang2/liyihua/polytropic_bipolar> was used as the working directory.
+Started at Wed Feb 26 19:46:44 2025
+Terminated at Wed Feb 26 19:46:47 2025
+Results reported at Wed Feb 26 19:46:47 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q mpi
+#BSUB -J relaxation
+#BSUB -n 24
+#BSUB -o ./data/out.txt
+#BSUB -e ./data/err.txt
+
+cd /share/home/guoyang2/liyihua/polytropic_bipolar/
+echo -n "==job started:"
+date
+#echo
+#mpirun -np 1 ./amrvac -i init.par > init.out
+echo
+#mpirun -np 960 ./amrvac -i amrvac.par > out
+mpirun -np 24 ./amrvac -i amrvac.par > out
+echo -n "==job finished:"
+date
+echo
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   7.00 sec.
+    Max Memory :                                 -
+    Average Memory :                             -
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Run time :                                   2 sec.
+    Turnaround time :                            3 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <./data/err.txt> for stderr output of this job.
+
+==job started:Wed Feb 26 20:22:33 CST 2025
+
+==job finished:Wed Feb 26 20:22:34 CST 2025
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@c26n01>
+Subject: Job 13576238: <relaxation> in cluster <njucluster> Done
+
+Job <relaxation> was submitted from host <c01n01> by user <guoyang2> in cluster <njucluster> at Wed Feb 26 20:22:31 2025
+Job was executed on host(s) <24*c26n01>, in queue <mpi>, as user <guoyang2> in cluster <njucluster> at Wed Feb 26 20:22:33 2025
+</share/home/guoyang2> was used as the home directory.
+</share/home/guoyang2/liyihua/polytropic_bipolar> was used as the working directory.
+Started at Wed Feb 26 20:22:33 2025
+Terminated at Wed Feb 26 20:22:35 2025
+Results reported at Wed Feb 26 20:22:35 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q mpi
+#BSUB -J relaxation
+#BSUB -n 24
+#BSUB -o ./data/out.txt
+#BSUB -e ./data/err.txt
+
+cd /share/home/guoyang2/liyihua/polytropic_bipolar/
+echo -n "==job started:"
+date
+#echo
+#mpirun -np 1 ./amrvac -i init.par > init.out
+echo
+#mpirun -np 960 ./amrvac -i amrvac.par > out
+mpirun -np 24 ./amrvac -i amrvac.par > out
+echo -n "==job finished:"
+date
+echo
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   6.49 sec.
+    Max Memory :                                 -
+    Average Memory :                             -
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Run time :                                   2 sec.
+    Turnaround time :                            4 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <./data/err.txt> for stderr output of this job.
+
+==job started:Wed Feb 26 20:26:41 CST 2025
+
+==job finished:Wed Feb 26 20:26:46 CST 2025
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@c31n14>
+Subject: Job 13576243: <relaxation> in cluster <njucluster> Done
+
+Job <relaxation> was submitted from host <c01n01> by user <guoyang2> in cluster <njucluster> at Wed Feb 26 20:26:39 2025
+Job was executed on host(s) <24*c31n14>, in queue <mpi>, as user <guoyang2> in cluster <njucluster> at Wed Feb 26 20:26:41 2025
+</share/home/guoyang2> was used as the home directory.
+</share/home/guoyang2/liyihua/polytropic_bipolar> was used as the working directory.
+Started at Wed Feb 26 20:26:41 2025
+Terminated at Wed Feb 26 20:26:46 2025
+Results reported at Wed Feb 26 20:26:46 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q mpi
+#BSUB -J relaxation
+#BSUB -n 24
+#BSUB -o ./data/out.txt
+#BSUB -e ./data/err.txt
+
+cd /share/home/guoyang2/liyihua/polytropic_bipolar/
+echo -n "==job started:"
+date
+#echo
+#mpirun -np 1 ./amrvac -i init.par > init.out
+echo
+#mpirun -np 960 ./amrvac -i amrvac.par > out
+mpirun -np 24 ./amrvac -i amrvac.par > out
+echo -n "==job finished:"
+date
+echo
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   68.00 sec.
+    Max Memory :                                 2422 MB
+    Average Memory :                             2422.00 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              7
+    Max Threads :                                9
+    Run time :                                   5 sec.
+    Turnaround time :                            7 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <./data/err.txt> for stderr output of this job.
+

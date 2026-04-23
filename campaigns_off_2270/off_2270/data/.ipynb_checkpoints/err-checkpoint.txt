@@ -1,0 +1,143 @@
+At line 213 of file mod_usr.f
+Fortran runtime error: Index '22' of dimension 1 of array 'b_init' outside of expected range (3:1)
+
+Error termination. Backtrace:
+At line 213 of file mod_usr.f
+Fortran runtime error: Index '22' of dimension 1 of array 'b_init' outside of expected range (3:1)
+
+Error termination. Backtrace:
+At line 213 of file mod_usr.f
+Fortran runtime error: Index '22' of dimension 1 of array 'b_init' outside of expected range (3:1)
+
+Error termination. Backtrace:
+At line 213 of file mod_usr.f
+Fortran runtime error: Index '22' of dimension 1 of array 'b_init' outside of expected range (3:1)
+
+Error termination. Backtrace:
+At line 213 of file mod_usr.f
+Fortran runtime error: Index '22' of dimension 1 of array 'b_init' outside of expected range (3:1)
+
+Error termination. Backtrace:
+At line 213 of file mod_usr.f
+Fortran runtime error: Index '22' of dimension 1 of array 'b_init' outside of expected range (3:1)
+
+Error termination. Backtrace:
+At line 213 of file mod_usr.f
+Fortran runtime error: Index '22' of dimension 1 of array 'b_init' outside of expected range (3:1)
+
+Error termination. Backtrace:
+At line 213 of file mod_usr.f
+Fortran runtime error: Index '22' of dimension 1 of array 'b_init' outside of expected range (3:1)
+
+Error termination. Backtrace:
+At line 213 of file mod_usr.f
+Fortran runtime error: Index '22' of dimension 1 of array 'b_init' outside of expected range (3:1)
+
+Error termination. Backtrace:
+At line 213 of file mod_usr.f
+Fortran runtime error: Index '22' of dimension 1 of array 'b_init' outside of expected range (3:1)
+
+Error termination. Backtrace:
+At line 213 of file mod_usr.f
+Fortran runtime error: Index '22' of dimension 1 of array 'b_init' outside of expected range (3:1)
+
+Error termination. Backtrace:
+#0  0x14cab7e8f171 in ???
+#1  0x14cab7e8fd19 in ???
+#2  0x14cab7e900fb in ???
+#0  0x14b0304cc171 in ???
+#1  0x14b0304ccd19 in ???
+#2  0x14b0304cd0fb in ???
+#0  0x14c989841171 in ???
+#1  0x14c989841d19 in ???
+#2  0x14c9898420fb in ???
+#0  0x14f0b2c23171 in ???
+#1  0x14f0b2c23d19 in ???
+#2  0x14f0b2c240fb in ???
+#3  0x4143db in __mod_usr_MOD_initonegrid_usr
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/mod_usr.f:213
+#4  0x6c1f51 in __mod_initialize_amr_MOD_initial_condition
+	at /share/home/guoyang/code/amrvac-amrvac3.1/lib/3d_debug/mod_initialize_amr.f:66
+#5  0x6c2178 in __mod_initialize_amr_MOD_initlevelone
+	at /share/home/guoyang/code/amrvac-amrvac3.1/lib/3d_debug/mod_initialize_amr.f:39
+#3  0x4143db in __mod_usr_MOD_initonegrid_usr
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/mod_usr.f:213
+#4  0x6c1f51 in __mod_initialize_amr_MOD_initial_condition
+	at /share/home/guoyang/code/amrvac-amrvac3.1/lib/3d_debug/mod_initialize_amr.f:66
+#5  0x6c2178 in __mod_initialize_amr_MOD_initlevelone
+	at /share/home/guoyang/code/amrvac-amrvac3.1/lib/3d_debug/mod_initialize_amr.f:39
+#3  0x4143db in __mod_usr_MOD_initonegrid_usr
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/mod_usr.f:213
+#4  0x6c1f51 in __mod_initialize_amr_MOD_initial_condition
+	at /share/home/guoyang/code/amrvac-amrvac3.1/lib/3d_debug/mod_initialize_amr.f:66
+#5  0x6c2178 in __mod_initialize_amr_MOD_initlevelone
+	at /share/home/guoyang/code/amrvac-amrvac3.1/lib/3d_debug/mod_initialize_amr.f:39
+#3  0x4143db in __mod_usr_MOD_initonegrid_usr
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/mod_usr.f:213
+#4  0x6c1f51 in __mod_initialize_amr_MOD_initial_condition
+	at /share/home/guoyang/code/amrvac-amrvac3.1/lib/3d_debug/mod_initialize_amr.f:66
+#5  0x6c2178 in __mod_initialize_amr_MOD_initlevelone
+	at /share/home/guoyang/code/amrvac-amrvac3.1/lib/3d_debug/mod_initialize_amr.f:39
+#6  0x402be7 in amrvac
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/amrvac.f:146
+#7  0x402a16 in main
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/amrvac.f:6
+#6  0x402be7 in amrvac
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/amrvac.f:146
+#7  0x402a16 in main
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/amrvac.f:6
+#6  0x402be7 in amrvac
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/amrvac.f:146
+#7  0x402a16 in main
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/amrvac.f:6
+At line 213 of file mod_usr.f
+Fortran runtime error: Index '22' of dimension 1 of array 'b_init' outside of expected range (3:1)
+#6  0x402be7 in amrvac
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/amrvac.f:146
+#7  0x402a16 in main
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/amrvac.f:6
+
+Error termination. Backtrace:
+#0  0x14c08440d171 in ???
+#1  0x14c08440dd19 in ???
+#2  0x14c08440e0fb in ???
+#3  0x4143db in __mod_usr_MOD_initonegrid_usr
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/mod_usr.f:213
+#4  0x6c1f51 in __mod_initialize_amr_MOD_initial_condition
+	at /share/home/guoyang/code/amrvac-amrvac3.1/lib/3d_debug/mod_initialize_amr.f:66
+#5  0x6c2178 in __mod_initialize_amr_MOD_initlevelone
+	at /share/home/guoyang/code/amrvac-amrvac3.1/lib/3d_debug/mod_initialize_amr.f:39
+#6  0x402be7 in amrvac
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/amrvac.f:146
+#7  0x402a16 in main
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/amrvac.f:6
+At line 213 of file mod_usr.f
+Fortran runtime error: Index '22' of dimension 1 of array 'b_init' outside of expected range (3:1)
+
+Error termination. Backtrace:
+#0  0x149bd3bb0171 in ???
+#1  0x149bd3bb0d19 in ???
+#2  0x149bd3bb10fb in ???
+#3  0x4143db in __mod_usr_MOD_initonegrid_usr
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/mod_usr.f:213
+#4  0x6c1f51 in __mod_initialize_amr_MOD_initial_condition
+	at /share/home/guoyang/code/amrvac-amrvac3.1/lib/3d_debug/mod_initialize_amr.f:66
+#5  0x6c2178 in __mod_initialize_amr_MOD_initlevelone
+	at /share/home/guoyang/code/amrvac-amrvac3.1/lib/3d_debug/mod_initialize_amr.f:39
+#6  0x402be7 in amrvac
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/amrvac.f:146
+#7  0x402a16 in main
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/amrvac.f:6
+#0  0x146ff10b3171 in ???
+#1  0x146ff10b3d19 in ???
+#2  0x146ff10b40fb in ???
+#3  0x4143db in __mod_usr_MOD_initonegrid_usr
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/mod_usr.f:213
+#4  0x6c1f51 in __mod_initialize_amr_MOD_initial_condition
+	at /share/home/guoyang/code/amrvac-amrvac3.1/lib/3d_debug/mod_initialize_amr.f:66
+#5  0x6c2178 in __mod_initialize_amr_MOD_initlevelone
+	at /share/home/guoyang/code/amrvac-amrvac3.1/lib/3d_debug/mod_initialize_amr.f:39
+#6  0x402be7 in amrvac
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/amrvac.f:146
+#7  0x402a16 in main
+	at /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270/amrvac.f:6

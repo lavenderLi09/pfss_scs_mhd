@@ -1,0 +1,2 @@
+[MacBook-Air-3.local:47299] shmem: mmap: an error occurred while determining whether or not /var/folders/rv/5p0qf41n16q806fnfmhv2flh0000gn/T//ompi.MacBook-Air-3.501/jf.0/3553820672/sm_segment.MacBook-Air-3.501.d3d30000.0 could be created.
+[MacBook-Air-3][[54227,0],0][btl_tcp_component.c:1021:mca_btl_tcp_component_create_listen] bind() failed: Operation not permitted (1)

@@ -1,0 +1,4 @@
+&paramlist
+  polar_ring_average = .false.
+  polar_ring_evolve = .false.
+/

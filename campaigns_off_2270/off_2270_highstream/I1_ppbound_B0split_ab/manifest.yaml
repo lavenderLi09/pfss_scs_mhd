@@ -1,0 +1,20 @@
+name: I1_ppbound_B0split_ab
+campaign: campaigns_off_2270
+parent_case: off_2270_highstream/I1_ppbound
+role: pp_boundary_b0split_check
+amrvac_dir: /Users/zhaoyan/Documents/codes/amrvac3.2
+main_par: amrvac_B0split.par
+extra_par_files:
+  - amrvac.par
+  - amrvac_nosplit.par
+submit_script: submit.sh
+output_prefixes:
+  - data/b0split_ab
+  - data/nosplit_ab
+analysis_dir: analysis
+figs_dir: figs
+logs_dir: logs
+notes_file: notes.md
+supplementary_items:
+  - initial/pp_inner_bc_rho_Tiso.bin
+  - initial/pp_inner_bc_rho_Tiso_p85.bin

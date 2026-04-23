@@ -1,0 +1,10 @@
+center_theta_phi_rad: 2.487100 1.439900
+center_xyz_unit: 0.079457 0.603549 -0.793357
+corner1_theta_phi_rad: 2.356200 1.309000
+corner1_xyz_unit: 0.183010 0.683009 -0.707111
+corner2_theta_phi_rad: 2.356200 1.570800
+corner2_xyz_unit: -0.000003 0.707103 -0.707111
+corner3_theta_phi_rad: 2.618000 1.570800
+corner3_xyz_unit: -0.000002 0.499995 -0.866028
+corner4_theta_phi_rad: 2.618000 1.309000
+corner4_xyz_unit: 0.129407 0.482958 -0.866028

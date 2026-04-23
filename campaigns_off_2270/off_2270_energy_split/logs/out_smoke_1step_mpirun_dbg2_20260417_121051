@@ -1,0 +1,89 @@
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ |         __  __ ____ ___        _    __  __ ______     ___    ____         |
+ |        |  \/  |  _ \_ _|      / \  |  \/  |  _ \ \   / / \  / ___|        |
+ |        | |\/| | |_) | |_____ / _ \ | |\/| | |_) \ \ / / _ \| |            |
+ |        | |  | |  __/| |_____/ ___ \| |  | |  _ < \ V / ___ \ |___         |
+ |        |_|  |_|_|  |___|   /_/   \_\_|  |_|_| \_\ \_/_/   \_\____|        |
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ [DBG] usr_init: enter
+ [DBG] usr_init: set_coordinate_system done
+ WARNING: turn off parabolic TC when using hyperbolic TC
+ Use Colgan & Feldman (2008) cooling curve
+ This version only till 10000 K, beware for floor T treatment
+ [DBG] usr_init: mhd_activate done
+ Reading amrvac.par
+ Reading smoke_1step.par
+ 
+ Output type | tsavestart |  dtsave   | ditsave | itsave(1) | tsave(1)
+         log | 0.000E+00  | ********* |      1  |      0    | *********
+      normal | 0.000E+00  | 0.100E+04 | ******  |      0    | *********
+       slice | 0.000E+00  | ********* | ******  | ******    | *********
+   collapsed | 0.000E+00  | ********* | ******  | ******    | *********
+    analysis | 0.000E+00  | ********* | ******  | ******    | *********
+ 
+ Stretched dimension            1
+ Using stretched grid with qs=   1.0160640000000001        1.0080000000000000        1.0039920318408906     
+         and first cell sizes=   2.5810177198628318E-003   1.2853673903699362E-003   6.4140344369991462E-004
+         Domain size (cells): 600 96 192 
+                Level one dx: 0.317E-01 0.327E-01 0.327E-01 
+           Refine estimation: Lohner's scheme
+ Note, Grid is reconstructed once every           8 iterations
+           restart_from_file:  undefined
+                  converting: F
+
+ Will apply pi-periodic conditions at northpole!
+ Will apply pi-periodic conditions at southpole!
+ [DBG] initglobaldata_usr: enter
+ [DBG] initglobaldata_usr: read_usr_params done
+ qstretch level:   1.0080000000000000     
+ Empirical heating config (Fan-2017 style):
+   heat_on= T
+   F[cgs]=   974000.00000000000       LH[cgs]=   19480000000.000000     
+   r-window=   1.0000000000000000        11.470000000000001     
+   B-weight= F  alpha=   0.0000000000000000       Bref[G]=   5.0000000000000000     
+   heat floor/cap=   0.0000000000000000        100.00000000000000     
+   debug_trace= T
+ [DBG] initglobaldata_usr: read_initial_magnetic_field start
+ [DBG] read_initial_magnetic_field: open start
+ [DBG] read_initial_magnetic_field: shape read done
+ [DBG] read_initial_magnetic_field: data read done
+ MHD simulation initialized by amrvac PFSS model
+   Initial Data Shape:            3         600          96         192
+   Load Initial Magnetic field data from: ../off_2270/initial/OFF_combined_lmax10_q1.008_nr600.bin                                            
+ First element before normalization:    3.3831248598263128     
+ Last  element before normalization:    0.0000000000000000     
+     min, max values of initial B (normalized):  -9.5941115325078119        15.413793539236206     
+ [DBG] initglobaldata_usr: read_initial_magnetic_field done
+ [DBG] initglobaldata_usr: read_pp_inner_bc start
+ [DBG] read_pp_inner_bc: open start
+ [DBG] read_pp_inner_bc: shape read done
+ [DBG] read_pp_inner_bc: data read done
+ [DBG] initglobaldata_usr: read_pp_inner_bc done
+ PP inner BC loaded: ../off_2270_highstream/I1_ppbound/initial/pp_inner_bc_rho_Tiso_p85.bin
+   rhob_map min/max:   9.9989277473543192E-002  0.92102182989665871     
+   Tiso_map min/max:   2.0088957809049330        2.0100000000136951     
+ [DBG] set_background_polytropic_state_pp call=           1  r_in=   1.0000000000000000       rhob_loc=  0.10000000000000001       Tiso_loc=   2.0099999999999998       gamma=   1.6666666999999999     
+ [DBG] parker call=           1  rd=   1.0000000000000000       gam=   1.6666666999999999       Tc=   2009999.9999999998       mu=  -9.9999999836342113E-008  H=   5.7367320851809627     
+ [DBG] parker e0=  -6666667.0109105259     
+
+Program received signal SIGILL: Illegal instruction.
+
+Backtrace for this error:
+
+Could not print backtrace: executable file is not an executable
+#0  0x105646d2f
+#1  0x105645d83
+#2  0x194d2d6a3
+#3  0x10468b8b3
+#4  0x10468b8b3
+#5  0x10468bebb
+#6  0x10469449b
+#7  0x104833ed3
+#8  0x10467ca8b
+#9  0x104c03147
+--------------------------------------------------------------------------
+prterun noticed that process rank 0 with PID 81262 on node bogon exited on
+signal 4 (Illegal instruction: 4).
+--------------------------------------------------------------------------

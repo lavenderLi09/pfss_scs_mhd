@@ -1,0 +1,996 @@
+module mod_usr   ! Outer corona MHD relaxation with solar wind 
+  use mod_mhd
+  use mod_pfss
+  implicit none
+  ! some global parameters
+  logical, save :: firstusrglobaldata=.true.
+  real(8), allocatable :: B_init(:,:,:,:), pbc(:), rbc(:)
+  integer           :: status,readwrite,blocksize
+  integer*4         :: i, j, k, ilevel, nx_ss, ny_ss
+  double precision  :: k_B,miu0,mass_H,usr_grav,SRadius,rhob,Tiso,rhob1,qs
+  
+  ! parameters of Parker's solar wind
+  double precision  :: rc, Vs
+  double precision  :: Vout, V_surface
+  integer           :: ix1,ix2,ix3,nth,nph,nvec,nrr
+  double precision :: dth,dph,dr0,mag_divisor
+  integer             :: ixg2,ixg3
+  double precision    :: xlen2, xlen3
+  integer, dimension(4) :: shp, shp_bound
+
+  ! global parameters for RBSL
+  integer :: np,nnp
+  double precision, allocatable :: x_axis(:,:)
+  double precision :: F_flx, a0
+  logical          :: I_Helix
+  ! global parameters for RBSL boundary
+  integer          :: ixgImin1,ixgImin2,ixgImin3,ixgImax1,ixgImax2,ixgImax3,&
+     ixgOmin1,ixgOmin2,ixgOmin3,ixgOmax1,ixgOmax2,ixgOmax3 
+  integer          :: m,n,p
+  double precision, allocatable :: brtp_rbsl(:,:,:,:)
+  double precision, allocatable :: brtp_rbsl_inner(:,:,:,:)
+  logical, save :: bound_rbsl_top_ready=.false.
+  double precision :: dx01, dx02, dx03
+
+  ! global parameters for RBSL inner boundary
+  double precision, allocatable :: Bfr_bound(:,:,:,:) 
+  logical, save :: bound_rbsl_ready = .false. 
+  double precision :: dra1, dth1, dph1
+
+  ! global parameters for prominence density along RBSL axis
+  double precision, allocatable :: s_axis(:), t_axis(:,:), n_axis(:,:),&
+      b_axis(:,:)
+  logical :: prominence_ready=.false.
+  double precision :: mm2n
+  double precision :: prom_Crho, prom_zc, prom_zbase, prom_Fmax
+  double precision :: prom_l_s, prom_w_s, prom_l_n, prom_w_n, prom_l_b,&
+      prom_w_b
+
+contains
+
+  !==============================================================================
+  ! Purpose: to include global parameters, set user methods, set coordinate 
+  !          system and activate physics module.
+  !==============================================================================
+  subroutine usr_init()
+    use mod_global_parameters
+    use mod_usr_methods
+
+    usr_set_parameters  => initglobaldata_usr
+    usr_init_one_grid   => initonegrid_usr
+    usr_special_bc      => specialbound_usr
+    usr_gravity         => gravity
+    usr_refine_grid     => special_refine_grid
+    usr_aux_output      => specialvar_output
+    usr_add_aux_names   => specialvarnames_output
+    !usr_transform_w     => transform_w_prominence
+
+    call set_coordinate_system("spherical")
+    call mhd_activate()
+  end subroutine usr_init
+
+  !==============================================================================
+  ! Purpose: to initialize user public parameters and reset global parameters.
+  !          Input data are also read here.
+  !==============================================================================
+  subroutine initglobaldata_usr()
+    use mod_global_parameters
+    character(len=70) :: file_path, file_Bfr_bound, file_brtp_rbsl
+    logical :: flip
+    double precision, allocatable :: b_r0(:,:),theta(:),phi(:)
+    integer :: xm,ym,amode,file_handle
+    integer :: lat0,lat1,lon0,lon1
+    integer :: iphi, itheta, unit
+    integer, dimension(MPI_STATUS_SIZE) :: statuss
+    character(len=100)    :: filename
+    real(8)               :: dr
+    integer               :: ibc
+
+    ! normalization unit in CGS Unit
+    k_B = 1.3806d-16          ! erg*K-1,erg*K-1,erg*K-1
+    miu0 = 4.d0*dpi !Gauss2,Gauss2,Gauss2 cm2,cm2,cm2 dyne-1,dyne-1,dyne-1
+    mass_H = 1.67262d-24      ! g
+    unit_length        = 6.955d10 ! cm
+    unit_temperature   = 1.d6 ! K
+    unit_numberdensity = 1.d9 ! cm-3,cm-3,cm-3
+    unit_density       = 1.4d0*mass_H*unit_numberdensity !2.341668000000000E-015 g*cm-3,g*cm-3,g*cm-3
+    unit_pressure      = 2.3d0*unit_numberdensity*k_B*unit_temperature !0.317538000000000 erg*cm-3,erg*cm-3,erg*cm-3
+    unit_magneticfield = dsqrt(miu0*unit_pressure) !1.99757357615242 Gauss
+    unit_velocity      = unit_magneticfield/dsqrt(miu0*unit_density) !1.16448846777562E007 cm/s = 116.45 km/s
+    unit_time          = unit_length/unit_velocity !5972.5794 s = 99.543 min
+    
+    !R_s =3.d0
+    usr_grav=-2.74d4*unit_length/unit_velocity**2  ! solar gravity
+    SRadius=6.955d10/unit_length                   ! Solar radius
+    mag_divisor = 1.0d0
+    rc = 3.45d0
+    Vs = 117.54d0 
+    !rhob = 5.0d9/100.0d0/unit_numberdensity 
+    rhob = 1.0d8/unit_numberdensity
+    Tiso = 2.01d0
+    qs = dble(qstretch_baselevel(1))
+    print*, 'qstretch level:', qs
+
+    filename = './initial/OFF_combined_lmax10_q1.008_nr600.bin'
+    call read_initial_magnetic_field(filename, shp, B_init)
+
+    nrr = domain_nx1
+    nth = domain_nx2
+    nph = domain_nx3
+    dth = dble(xprobmax2-xprobmin2)/dble(nth-1)
+    dph = dble(xprobmax3-xprobmin3)/dble(nph-1)
+    !dr0 = dble(xprobmax1-xprobmin1)/dble(nrr-0)
+    dr0 = dble(xprobmax1-xprobmin1)*dble(1.d0-qs)/dble(1.d0-qs**dble(nrr-0))
+
+    call cal_parker_solar_wind(1.0d0,rc,vs,V_surface)
+
+    allocate(pbc(nghostcells))
+    allocate(rbc(nghostcells))
+    dr = 0
+    do ibc=nghostcells,1,-1
+        dr = dr+dr0*qs**(-ibc)
+        call cal_parker_solar_wind(1-dr,rc,vs,Vout)
+        rbc(ibc) = (rhob*V_surface)/(Vout*(1-dr)**2)
+        pbc(ibc) = rbc(ibc)*Tiso
+        if (mype==0) then
+        print*, 'PSW at ', ibc, 'ghost layer'
+        print*, 'Velocity at current layer', Vout
+        print*, 'number density at current layer', rbc(ibc)
+        print*, 'p_ at current layer', pbc(ibc)
+        endif
+    end do
+
+    if (mype == 0) then
+       call cal_parker_solar_wind(xprobmax1, rc, vs, vout)
+       print *,'number density at maxmal r', (rhob*V_surface)/(Vout*xprobmax1**2) 
+       print *,'velocity ar maxmal r', vout
+    endif
+
+  end subroutine initglobaldata_usr
+
+  !==============================================================================
+  ! Purpose: to read initial magnetic field
+  !==============================================================================  
+  subroutine read_initial_magnetic_field(filename, shp, B_init)
+      use mod_global_parameters
+      character(len=*), intent(in)               :: filename
+      double precision, allocatable, intent(out) :: B_init(:,:,:,:)
+      integer, dimension(4), intent(out)         :: shp
+      integer                                    :: ios
+      integer                                    :: unit
+      
+      open(newunit=unit, file=filename, form='unformatted', access='stream',&
+          status='old')
+      read(unit) shp
+
+      allocate(B_init(shp(1),shp(2),shp(3),shp(4)))
+      read(unit) B_init
+      close(unit)
+      B_init = B_init(:,:,shp(3):1:-1,:)
+
+      if(mype==0) then
+      print *,'MHD simulation initialized by amrvac PFSS model'
+      print *, '  Initial Data Shape: ', shp
+      print *, '  Load Initial Magnetic field data from: ', filename
+      print *, 'First element before normalization: ', B_init(1,1,1,1)
+      print *, 'Last  element before normalization: ', B_init(size(B_init,1),size(B_init,2),size(B_init,3),size(B_init,4))
+      endif
+
+      B_init = B_init/unit_magneticfield/mag_divisor
+      if(mype==0) then
+      print*,'    min, max values of initial B (normalized):', minval(B_init), maxval(B_init)
+      endif
+  end subroutine read_initial_magnetic_field
+
+  !==============================================================================
+  ! Purpose: to initialize the initial condition
+  !==============================================================================
+  subroutine initonegrid_usr(ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,ixImax3,&
+     ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3,w,x)
+  ! initialize one grid
+    use mod_global_parameters    
+    integer, intent(in) :: ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,ixImax3,&
+        ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3
+    double precision, intent(in) :: x(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,1:ndim)
+    double precision, intent(inout) :: w(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,1:nw)
+    double precision :: qs
+    integer          :: irr,ith,iph
+    logical, save:: first=.true.
+    
+
+    if (first .and. mype==0) then
+      print *,'Relax a solor wind model with politropic MHD'
+      print *,'User Tiso(MK): ', Tiso
+      print *,'V_surface(unit_velocity): ', V_surface
+      first=.false.
+    end if
+    
+    qs = dble(qstretch_baselevel(1))
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(1:3))=0.0d0
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       mag(1):mag(ndir))=B_init(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3,1:ndir)
+    do ix3=ixOmin3,ixOmax3
+    do ix2=ixOmin2,ixOmax2
+    do ix1=ixOmin1,ixOmax1
+      call cal_parker_solar_wind(x(ix1,ix2,ix3,1), rc, vs, vout)
+      w(ix1,ix2,ix3,rho_)  = (rhob*V_surface)/(Vout*x(ix1,ix2,ix3,1)**2)
+      w(ix1,ix2,ix3,mom(1))= Vout*w(ix1,ix2,ix3,rho_)
+      irr = ceiling(log(1-(1-qs)*(x(ix1,ix2,ix3,1)-xprobmin1)/dr0)/log(qs))
+      irr = ceiling((log(1-(1-qs)*(x(ix1,ix2,ix3,&
+         1)-xprobmin1)/dr0)-log(1+1/(2*qs)*(1-qs)))/log(qs))
+      !irr = ceiling((x(ix1,ix2,ix3,1)-xprobmin1)/dr0)
+      ith = ceiling((x(ix1,ix2,ix3,2)-xprobmin2)/dth) 
+      iph = ceiling((x(ix1,ix2,ix3,3)-xprobmin3)/dph)
+      w(ix1,ix2,ix3,mag(1:3))=B_init(1:3,irr,ith,iph)
+    end do
+    end do
+    end do
+    !w(ixO^S,rho_) = rhob1*dexp(usr_grav*(SRadius**2)/Tiso*(1.d0/SRadius-1.d0/x(ixO^S,1))) ! isotermal atomosphere
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       p_)   = w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       rho_)*Tiso/(mhd_gamma-1.0d0)
+    
+    if(mhd_glm) w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,psi_)=0.d0
+    !call mhd_to_conserved(ixI^L,ixO^L,w,x)
+
+  end subroutine initonegrid_usr
+
+  !==============================================================================
+  ! Purpose: Calculate the Parker solar wind solution with Lambert function
+  !==============================================================================
+  subroutine cal_parker_solar_wind(ra_pksw, rc_pksw, vs_pksw, v_pksw)
+  use mod_global_parameters
+  real*8, intent(in)  :: ra_pksw, rc_pksw, vs_pksw
+  real*8, intent(out) :: v_pksw
+  real*8              :: W0_pksw, Wn1_pksw, Dr_pksw, nDr_pksw, plw, L_pksw,&
+      M_pksw
+
+
+   Dr_pksw = ((ra_pksw/rc_pksw)**(-4.0d0))*dexp(4.0d0*(1.0d0-&
+      (rc_pksw/ra_pksw))-1.0d0)
+   nDr_pksw = -1.0d0*Dr_pksw
+   if (ra_pksw .le. rc_pksw-0.05d0) then
+       if (nDr_pksw .gt. -0.25) then
+            W0_pksw = nDr_pksw-nDr_pksw**2.0d0 + &
+               1.5d0*nDr_pksw*nDr_pksw*nDr_pksw
+       endif
+       if (nDr_pksw .le. -0.25) then
+           plw=sqrt(2.0d0*(exp(1.0d0)*nDr_pksw+1.0d0))
+           W0_pksw=-1.0d0+plw-(1.0d0/3.0d0)*plw**2.0d0+&
+              (11.0d0/72.0d0)*plw*plw*plw
+       endif
+     v_pksw = dsqrt(-1.0d0*vs_pksw*vs_pksw*W0_pksw)
+   endif
+
+    if (ra_pksw .ge. rc_pksw-0.05d0 .and. ra_pksw .le. rc_pksw+0.05d0) then
+     v_pksw = vs_pksw*sqrt(3.0d0-2.0d0*rc_pksw/ra_pksw)
+    endif
+
+
+   if (ra_pksw .gt. rc_pksw+0.05d0) then
+      L_pksw=log(abs(nDr_pksw))
+      M_pksw=log(abs(L_pksw))
+      Wn1_pksw = L_pksw - M_pksw + (M_pksw/L_pksw) + &
+         M_pksw*(M_pksw-2.0d0)/(2.0d0*L_pksw*L_pksw)+&
+         M_pksw*(6.0d0-9.0d0*M_pksw+2.0d0*M_pksw*M_pksw)/(&
+         6.0d0*L_pksw*L_pksw*L_pksw)
+      if (abs(nDr_pksw) .ge. 0.28796090d0) then
+         plw=-sqrt(2.0d0*(exp(1.0d0)*nDr_pksw+1.0d0))
+         Wn1_pksw=-1.0d0+plw-(1.0d0/3.0d0)*plw*plw+(11.0d0/72.0d0)*plw*plw*plw
+      endif
+     v_pksw = dsqrt(-1.0d0*vs_pksw*vs_pksw*Wn1_pksw)
+   endif
+   ! normalize the unit
+     v_pksw = v_pksw*1.0d5/unit_velocity  ! Km/s -> normalized velocity
+
+  end subroutine
+
+  !==============================================================================
+  ! Purpose: convert vectors in Cartesian coordinates to spherical ones
+  !==============================================================================
+  subroutine Cart2SphereVector(ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,ixImax3,&
+     ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3,x,A_in,A_out)
+
+    integer,intent(in)           :: ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,&
+       ixImax3,ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3
+    double precision,intent(in)  :: x(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,1:ndim)
+    double precision,intent(in)  :: A_in(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,1:ndim)
+    double precision,intent(out) :: A_out(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,1:ndim)
+
+    double precision :: raddeg = dpi/ 180.
+    double precision :: lon(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+       lat(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3)
+    double precision :: bxCart(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3),byCart(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3),bzCart(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3)
+    double precision :: br(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+       bth(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+       bph(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3)
+    double precision :: a11(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+       a12(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+       a13(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3)
+    double precision :: a21(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+       a22(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+       a23(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3)
+    double precision :: a31(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+       a32(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+       a33(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3)
+    double precision :: latc(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+       lonc(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+       pAng(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3)
+
+    bxCart=zero
+    byCart=zero
+    bzCart=zero
+       lon=zero
+       lat=zero
+       bph=zero
+       bth=zero
+        br=zero
+     A_out=zero
+
+    bxCart(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3) = A_in(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       2)
+    byCart(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3) = A_in(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       3)
+    bzCart(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3) = A_in(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       1)
+    lon(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3) =  x(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3,3)
+    lat(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3) =  0.5d0*dpi - &
+       x(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,2)
+    latc = 0.0d0
+    lonc = 0.0d0
+    pAng = 0.0d0
+
+    a11 = -sin(latc) * sin(pAng) * sin(lon - lonc) + cos(pAng) * cos(lon - &
+       lonc)
+    a12 =  sin(latc) * cos(pAng) * sin(lon - lonc) + sin(pAng) * cos(lon - &
+       lonc)
+    a13 = -cos(latc) * sin(lon - lonc)
+    a21 = -sin(lat) * (sin(latc) * sin(pAng) * cos(lon - lonc) + cos(pAng) * &
+       sin(lon - lonc)) - cos(lat) * cos(latc) * sin(pAng)
+    a22 =  sin(lat) * (sin(latc) * cos(pAng) * cos(lon - lonc) - sin(pAng) * &
+       sin(lon - lonc)) + cos(lat) * cos(latc) * cos(pAng)
+    a23 = -cos(latc) * sin(lat) * cos(lon - lonc) + sin(latc) * cos(lat)
+    a31 =  cos(lat) * (sin(latc) * sin(pAng) * cos(lon - lonc) + cos(pAng) * &
+       sin(lon - lonc)) - sin(lat) * cos(latc) * sin(pAng)
+    a32 = -cos(lat) * (sin(latc) * cos(pAng) * cos(lon - lonc) - sin(pAng) * &
+       sin(lon - lonc)) + sin(lat) * cos(latc) * cos(pAng)
+    a33 =  cos(lat) * cos(latc) * cos(lon - lonc) + sin(lat) * sin(latc)
+
+    bph(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3) = a11(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3) * bxCart(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3) +a12(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3) * byCart(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3) +a13(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3) * bzCart(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3)
+    bth(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3) = a21(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3) * bxCart(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3) +a22(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3) * byCart(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3) +a23(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3) * bzCart(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3)
+     br(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3) = a31(ixOmin1:ixOmax1,&
+        ixOmin2:ixOmax2,ixOmin3:ixOmax3) * bxCart(ixOmin1:ixOmax1,&
+        ixOmin2:ixOmax2,ixOmin3:ixOmax3) +a32(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+        ixOmin3:ixOmax3) * byCart(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+        ixOmin3:ixOmax3) +a33(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+        ixOmin3:ixOmax3) * bzCart(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+        ixOmin3:ixOmax3)
+
+    A_out(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       1) =         br(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3)
+    A_out(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       2) = -1.0d0*bth(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3)
+    A_out(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       3) =        bph(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3)
+
+    !print*,'Finish Cart2SphereVector!'   
+
+  end subroutine Cart2SphereVector
+
+subroutine Spherical_curlvector_usr(qvec,ixImin1,ixImin2,ixImin3,ixImax1,&
+   ixImax2,ixImax3,ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3,xS,curlvec)
+  use mod_global_parameters
+  integer, intent(in) :: ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,ixImax3,&
+      ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3
+  double precision, intent(in)  :: qvec(ixImin1:ixImax1,ixImin2:ixImax2,&
+     ixImin3:ixImax3,1:3), xS(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3,&
+     1:3)
+  double precision, intent(out) :: curlvec(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+     ixOmin3:ixOmax3,1:3)
+  integer :: ixAmin1,ixAmin2,ixAmin3,ixAmax1,ixAmax2,ixAmax3, hxOmin1,hxOmin2,&
+     hxOmin3,hxOmax1,hxOmax2,hxOmax3, jxOmin1,jxOmin2,jxOmin3,jxOmax1,jxOmax2,&
+     jxOmax3, idir, jdir, kdir
+  double precision :: tmp(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+      tmp2(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3), epssin
+
+  ixAmin1=ixOmin1-1;ixAmin2=ixOmin2-1;ixAmin3=ixOmin3-1;ixAmax1=ixOmax1+1
+  ixAmax2=ixOmax2+1;ixAmax3=ixOmax3+1;
+  if (ixImin1>ixAmin1.or.ixImax1<ixAmax1.or.ixImin2>ixAmin2.or.ixImax2<ixAmax2.or.&
+     ixImin3>ixAmin3.or.ixImax3<ixAmax3) call &
+     mpistop("Error in curlvector: Non-conforming input limits")
+  curlvec(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,1:3)=zero
+
+  epssin = 1.0d-6
+  do idir=1,3; do jdir=1,ndim; do kdir=1,3
+    if(lvc(idir,jdir,kdir)/=0)then
+      tmp(ixAmin1:ixAmax1,ixAmin2:ixAmax2,&
+         ixAmin3:ixAmax3)=qvec(ixAmin1:ixAmax1,ixAmin2:ixAmax2,ixAmin3:ixAmax3,&
+         kdir)
+      hxOmin1=ixOmin1-kr(jdir,1);hxOmin2=ixOmin2-kr(jdir,2)
+      hxOmin3=ixOmin3-kr(jdir,3);hxOmax1=ixOmax1-kr(jdir,1)
+      hxOmax2=ixOmax2-kr(jdir,2);hxOmax3=ixOmax3-kr(jdir,3);
+      jxOmin1=ixOmin1+kr(jdir,1);jxOmin2=ixOmin2+kr(jdir,2)
+      jxOmin3=ixOmin3+kr(jdir,3);jxOmax1=ixOmax1+kr(jdir,1)
+      jxOmax2=ixOmax2+kr(jdir,2);jxOmax3=ixOmax3+kr(jdir,3);
+      select case(jdir)
+      case(1)
+      tmp(ixAmin1:ixAmax1,ixAmin2:ixAmax2,ixAmin3:ixAmax3)=tmp(ixAmin1:ixAmax1,&
+         ixAmin2:ixAmax2,ixAmin3:ixAmax3)*xS(ixAmin1:ixAmax1,ixAmin2:ixAmax2,&
+         ixAmin3:ixAmax3,1)
+      tmp2(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+         ixOmin3:ixOmax3)=(tmp(jxOmin1:jxOmax1,jxOmin2:jxOmax2,&
+         jxOmin3:jxOmax3)-tmp(hxOmin1:hxOmax1,hxOmin2:hxOmax2,&
+         hxOmin3:hxOmax3))/((xS(jxOmin1:jxOmax1,jxOmin2:jxOmax2,&
+         jxOmin3:jxOmax3,1)-xS(hxOmin1:hxOmax1,hxOmin2:hxOmax2,hxOmin3:hxOmax3,&
+         1))*xS(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,1))
+          case(2)
+      if(idir==1) tmp(ixAmin1:ixAmax1,ixAmin2:ixAmax2,&
+         ixAmin3:ixAmax3)=tmp(ixAmin1:ixAmax1,ixAmin2:ixAmax2,&
+         ixAmin3:ixAmax3)*dsin(xS(ixAmin1:ixAmax1,ixAmin2:ixAmax2,&
+         ixAmin3:ixAmax3,2))
+      tmp2(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+         ixOmin3:ixOmax3)=(tmp(jxOmin1:jxOmax1,jxOmin2:jxOmax2,&
+         jxOmin3:jxOmax3)-tmp(hxOmin1:hxOmax1,hxOmin2:hxOmax2,&
+         hxOmin3:hxOmax3))/((xS(jxOmin1:jxOmax1,jxOmin2:jxOmax2,&
+         jxOmin3:jxOmax3,2)-xS(hxOmin1:hxOmax1,hxOmin2:hxOmax2,hxOmin3:hxOmax3,&
+         2))*xS(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,1))
+      if(idir==1) tmp2(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+         ixOmin3:ixOmax3)=tmp2(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+         ixOmin3:ixOmax3)/max(dabs(dsin(xS(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+         ixOmin3:ixOmax3,2))),epssin)
+     
+        case(3)
+      tmp2(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+         ixOmin3:ixOmax3)=(tmp(jxOmin1:jxOmax1,jxOmin2:jxOmax2,&
+         jxOmin3:jxOmax3)-tmp(hxOmin1:hxOmax1,hxOmin2:hxOmax2,&
+         hxOmin3:hxOmax3))/((xS(jxOmin1:jxOmax1,jxOmin2:jxOmax2,&
+         jxOmin3:jxOmax3,3)-xS(hxOmin1:hxOmax1,hxOmin2:hxOmax2,hxOmin3:hxOmax3,&
+         3))*xS(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+         1)*dsin(xS(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,2)))
+     
+      end select
+      if(lvc(idir,jdir,kdir)==1)then
+        curlvec(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+           idir)=curlvec(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+           idir)+tmp2(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3)
+      else
+        curlvec(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+           idir)=curlvec(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+           idir)-tmp2(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3)
+      endif
+    endif
+  enddo; enddo; enddo;
+end subroutine Spherical_curlvector_usr
+
+  !==============================================================================
+  ! Purpose: to provide special boundary conditions set by users.
+  !==============================================================================
+  subroutine specialbound_usr(qt,ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,&
+     ixImax3,ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3,iB,w,x)
+    use mod_global_parameters
+    ! special boundary types, user defined
+    integer, intent(in) :: ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3, iB,&
+        ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,ixImax3
+    double precision, intent(in) :: qt, x(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,1:ndim)
+    double precision, intent(inout) :: w(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,1:nw)
+    
+    double precision :: Qp(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+       xlen1,xlen2,xlen3
+    double precision :: r_ghost, r_mirror
+    double precision, allocatable :: magCC(:,:,:),xex(:,:,:)
+    integer :: ix1,ix2,ix3,ixOsmin1,ixOsmin2,ixOsmin3,ixOsmax1,ixOsmax2,&
+       ixOsmax3,jxOmin1,jxOmin2,jxOmin3,jxOmax1,jxOmax2,jxOmax3,idir,ixbc1,&
+       ixbc2,ixbc3,ixAmin1,ixAmin2,ixAmin3,ixAmax1,ixAmax2,ixAmax3
+    
+    !! MHD extra parameters
+    integer :: ixIMmin1,ixIMmin2,ixIMmin3,ixIMmax1,ixIMmax2,ixIMmax3, ith, iph,&
+        ira
+    integer :: ith1, iph1
+    integer :: ira2, ith2, iph2
+    double precision :: tmp1(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+       tmp2(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+       pth(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+       tmpB(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,1:ndim)
+    double precision :: coeffrho
+    double precision :: q,q1,a0,a1,a2,a3,b0,b1,b2,c1,c2,c3,c4
+    double precision :: BfrS_interp(3)
+    
+    q  = 1.008d0
+    q1 = 1.0d0/q
+    a0 = -1.0d0-1.0d0/(1.0d0+q)-1/(1.0d0+q+q**2)
+    a1 = 1.0d0+1.0d0/q**2+1.0d0/q**2
+    a2 = -(1.0d0+q+q**2)/(q**3+q**4)
+    a3 = 1.0d0/(q**3+q**4+q**5)
+    b0 = -(2.0d0+q1)/(1.0d0+q1)
+    b1 = 1.0d0+1.0d0/q1
+    b2 = -1.0d0/(1.0d0+q1**2)
+    ! constant value extrapolation in r-maximal boundary 
+    c1 = -24.0d0*q1**6/(1.0d0-2.0d0*q1-3.0d0*q1**2+2.0d0*q1**3+8.0d0*q1**4+&
+       12.0d0*q1**5-24.0d0*q1**6)
+    c2 = 6.0d0*q1**3/(2.0d0-7.0d0*q1+2.0d0*q1**2+14.0d0*q1**3-12.0d0*q1**4)
+    c3 = 8.0d0*q1/(-6.0d0+17.0d0*q1+6.0d0*q1**2-51.0d0*q1**3+36.0d0*q1**4)
+    c4 = 3.0d0/(3.0d0-4.0d0*q1-6.0d0*q1**2-4.0d0*q1**3+16.0d0*q1**4+&
+       24.0d0*q1**5-32.0d0*q1**6)
+
+    nrr = domain_nx1
+    nth = domain_nx2
+    nph = domain_nx3
+    dth = dble(xprobmax2-xprobmin2)/dble(nth-1)
+    dph = dble(xprobmax3-xprobmin3)/dble(nph-1)
+
+    !if(mhd_glm) w(ixO^S,psi_)=0.d0
+    
+    select case(iB)
+     case(1)
+       !if(mhd_glm) w(ixO^S,psi_)=0.d0
+       !call mhd_to_primitive(ixI^L,IxO^L,w,x)
+       w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(:))=0.0d0
+       ! velocity and density are fixed to PKSW solution
+       do ix3=ixOmin3,ixOmax3
+       do ix2=ixOmin2,ixOmax2
+       do ix1=ixOmin1,ixOmax1
+         call cal_parker_solar_wind(x(ix1,ix2,ix3,1), rc, vs, vout)
+         w(ix1,ix2,ix3,rho_)  = (rhob*V_surface)/(Vout*x(ix1,ix2,ix3,1)**2)
+         w(ix1,ix2,ix3,p_)    = w(ix1,ix2,ix3,rho_)*Tiso/(mhd_gamma-1.0d0)
+       end do
+       end do
+       end do
+       w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(1)) = zero
+       w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(2)) = zero
+       w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(3)) = zero
+       !if(mype==0) then
+       !  print *, 'maxval, minval of number density:', maxval(w(ixO^S, rho_)), minval(w(ixO^S, rho_))
+       !  print *, 'maxval, minval of p:', maxval(w(ixO^S, p_)), minval(w(ixO^S, p_))
+       !endif
+       !w(ixO^S,mom(2)) = -w(ixOmax1+nghostcells:ixOmax1+1:-1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(2))
+       !w(ixO^S,mom(3)) = -w(ixOmax1+nghostcells:ixOmax1+1:-1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(3))
+!       w(ixO^S,mom(2)) = -w(ixOmax1+nghostcells:ixOmax1+1:-1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(2))/&
+!                          w(ixOmax1+nghostcells:ixOmax1+1:-1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,rho_) 
+!       w(ixO^S,mom(3)) = -w(ixOmax1+nghostcells:ixOmax1+1:-1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(3))/&
+!                          w(ixOmax1+nghostcells:ixOmax1+1:-1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,rho_)
+!       ! pressure use the equal gradient extrapolation of 3rd
+!       do ix1=ixOmax1,ixOmin1,-1
+!         w(ix1^%1ixO^S,p_)=(a0-a1)/a0*w(ix1+1^%1ixO^S,p_)+&
+!                           (a1-a2)/a0*w(ix1+2^%1ixO^S,p_)+&
+!                           (a2-a3)/a0*w(ix1+3^%1ixO^S,p_)+&
+!                           (a3- 0)/a0*w(ix1+4^%1ixO^S,p_)
+!       end do
+!    ! pressure use the isothermal atmosphere
+!       pth(ixOmax1+1^%1ixO^S) = w(ixOmax1+1^%1ixO^S,p_)/w(ixOmax1+1^%1ixO^S,rho_) ![T]
+!       do ix1=ixOmax1, ixOmin1, -1
+!         w(ix1^%1ixO^S,p_)   = pth(ixOmax1+1^%1ixO^S)*w(ix1^%1ixO^S,rho_)
+!       end do
+       ! magnetic field: first ghost cell with line-tied condition; the other use the equal gradient extrapolation
+       ! w(ixOmax1^%1ixO^S,mag(1))   = w(ixOmax1+1^%1ixO^S,mag(1))
+       !if (.not. bound_rbsl_ready) call bound_Brtp_rbsl()
+       do ix2=ixOmin2,ixOmax2
+         do ix3 = ixOmin3,ixOmax3
+           ! fixed to OFF field
+           ith1 = ceiling((x(ixOmax1,ix2,ix3,2)-xprobmin2)/dth) 
+           iph1 = ceiling((x(ixOmax1,ix2,ix3,3)-xprobmin3)/dph)
+           w(ixOmax1,ix2,ix3,mag(1:3)) = B_init(1:3,1,ith1,iph1)
+         end do
+       end do
+       !w(ixOmax1^%1ixO^S,mag(2:3)) = (a0-a1)/a0*w(ixOmax1+1^%1ixO^S,mag(2:3))+&
+       !                              (a1-a2)/a0*w(ixOmax1+2^%1ixO^S,mag(2:3))+&
+       !                              (a2-a3)/a0*w(ixOmax1+3^%1ixO^S,mag(2:3))+&
+       !                              (a3- 0)/a0*w(ixOmax1+4^%1ixO^S,mag(2:3))
+       do ix1=ixOmax1-1,ixOmin1,-1
+         w(ix1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,mag(1:3))=(a0-a1)/a0*w(ix1+1,&
+            ixOmin2:ixOmax2,ixOmin3:ixOmax3,mag(1:3))+(a1-a2)/a0*w(ix1+2,&
+            ixOmin2:ixOmax2,ixOmin3:ixOmax3,mag(1:3))+(a2-a3)/a0*w(ix1+3,&
+            ixOmin2:ixOmax2,ixOmin3:ixOmax3,mag(1:3))+(a3- 0)/a0*w(ix1+4,&
+            ixOmin2:ixOmax2,ixOmin3:ixOmax3,mag(1:3))
+       end do
+       !call mhd_to_conserved(ixI^L,ixO^L,w,x)
+
+     case(2)
+       !if(mhd_glm) w(ixO^S,psi_)=0.d0
+       !call mhd_to_primitive(ixI^L,ixA^L,w,x)
+       do ix1 = ixOmin1,ixOmax1
+         ! constant-value extrapolation
+         !w(ix1^%1ixO^S,rho_) = c1*w(ix1-1^%1ixO^S,rho_)+&
+         !                      c2*w(ix1-2^%1ixO^S,rho_)+&
+         !                      c3*w(ix1-3^%1ixO^S,rho_)+&
+         !                      c4*w(ix1-4^%1ixO^S,rho_)
+         !w(ix1^%1ixO^S,p_)   = c1*w(ix1-1^%1ixO^S,p_)+&
+         !                      c2*w(ix1-2^%1ixO^S,p_)+&
+         !                      c3*w(ix1-3^%1ixO^S,p_)+&
+         !                      c4*w(ix1-4^%1ixO^S,p_)
+         !w(ix1^%1ixO^S,mom(1)) = c1*w(ix1-1^%1ixO^S,mom(1))+&
+         !                        c2*w(ix1-2^%1ixO^S,mom(1))+&
+         !                        c3*w(ix1-3^%1ixO^S,mom(1))+&
+         !                        c4*w(ix1-4^%1ixO^S,mom(1))
+
+         ! zero-gradient extrapolation
+         w(ix1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,rho_) = (-b1/b0)*w(ix1-1,&
+            ixOmin2:ixOmax2,ixOmin3:ixOmax3,rho_)+(-b2/b0)*w(ix1-2,&
+            ixOmin2:ixOmax2,ixOmin3:ixOmax3,rho_)
+         w(ix1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,p_)   = (-b1/b0)*w(ix1-1,&
+            ixOmin2:ixOmax2,ixOmin3:ixOmax3,p_)+(-b2/b0)*w(ix1-2,&
+            ixOmin2:ixOmax2,ixOmin3:ixOmax3,p_)
+         w(ix1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(1)) = (-b1/b0)*w(ix1-1,&
+            ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(1))+(-b2/b0)*w(ix1-2,&
+            ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(1))
+         w(ix1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(2:3)) = zero
+         w(ix1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,mag(2:3)) = zero
+         ! zero-gradient extra, r^2 Br conservation
+         w(ix1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,mag(1)) = ((-b1/b0)*w(ix1-1,&
+            ixOmin2:ixOmax2,ixOmin3:ixOmax3,mag(1))*x(ix1-1,ixOmin2:ixOmax2,&
+            ixOmin3:ixOmax3,1)**2+(-b2/b0)*w(ix1-2,ixOmin2:ixOmax2,&
+            ixOmin3:ixOmax3,mag(1))*x(ix1-2,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+            1)**2)/x(ix1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,1)**2 
+                                  !magnetic flux constant 
+!         w(ix1^%1ixO^S,mag(:)) = c1*w(ix1-1^%1ixO^S,mag(:))+&
+!                                 c2*w(ix1-2^%1ixO^S,mag(:))+&
+!                                 c3*w(ix1-3^%1ixO^S,mag(:))+&
+!                                 c4*w(ix1-4^%1ixO^S,mag(:))
+       end do
+       
+       ! rho, mr fixed to PKSW solution
+       !{do ix^DB=ixOmin^DB,ixOmax^DB\}
+         !call cal_parker_solar_wind(x(ix^D,1), rc, vs, vout)
+         !w(ix^D,rho_)  = (rhob*V_surface)/(Vout*x(ix^D,1)**2)
+         !w(ix^D,mom(1))= vout*w(ix^D,rho_)
+       !{end do\}
+       
+       ! mr no-inflow
+       !do ix1 = ixOmin1,ixOmax1
+       !  w(ix1^%1ixO^S,mom(1)) = w(ixOmin1-1^%1ixO^S,mom(1))
+       !  where(w(ix1^%1ixO^S,mom(1))<0.d0)
+       !    w(ix1^%1ixO^S,mom(1))=0.d0
+       !  end where
+       !end do
+
+       ! mt, mp =0
+       !w(ix1^%1ixO^S,mom(2:3)) =  0
+
+       ! mt, mp inverse-symmetric
+       !w(ixO^S,mom(2)) = -w(ixOmin1-1:ixOmin1-nghostcells:-1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(2))
+       !w(ixO^S,mom(3)) = -w(ixOmin1-1:ixOmin1-nghostcells:-1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(3))
+       
+       !do ix1 = ixOmin1,ixOmax1
+          ! r^2*rho is continuous
+          ! w(ix1^%1ixO^S,rho_) = w(ixOmin1-1^%1ixO^S,rho_)*(x(ixOmin1-1^%1ixO^S,1)/x(ix1^%1ixO^S,1))**2
+          ! v_r no-inflow is continuous
+          !waii w(ix1^%1ixO^S,mom(1)) = w(ixOmin1-1^%1ixO^S,mom(1))
+          !where(w(ix1^%1ixO^S,mom(1))<0.d0)
+          !  w(ix1^%1ixO^S,mom(1))=0.d0
+          !end where
+          ! r*v_theta is continuous, angular momentum conservation
+          !w(ix1^%1ixO^S,mom(2)) = w(ixOmin1-1^%1ixO^S,mom(2))*x(ixOmin1-1^%1ixO^S,1)/x(ix1^%1ixO^S,1)
+          ! r*v_phi is continuous, angular momentum conservation
+          !w(ix1^%1ixO^S,mom(3)) = w(ixOmin1-1^%1ixO^S,mom(3))*x(ixOmin1-1^%1ixO^S,1)/x(ix1^%1ixO^S,1)
+       !end do
+
+       ! p zero-gradient
+       !do ix1=ixOmin1,ixOmax2
+       !  w(ix1^%1ixO^S,p_)=(-b1/b0)*w(ix1-1^%1ixO^S,p_)+&
+       !                    (-b2/b0)*w(ix1-2^%1ixO^S,p_)
+       !end do
+
+       ! p: isothermal
+       !pth(ixOmin1-1^%1ixO^S) = w(ixOmin1-1^%1ixO^S,p_)/w(ixOmin1-1^%1ixO^S,rho_) ![T]
+       !do ix1=ixOmin1,ixOmax1
+         ! isothermal boundary condition
+       !  w(ix1^%1ixO^S,p_)   = pth(ixOmin1-1^%1ixO^S)*w(ix1^%1ixO^S,rho_)
+       !enddo
+       
+       ! magnetic field: Br use zero-gradient extrapolation; Btp fix to zero
+       !do ix1=ixOmin1,ixOmax1
+       !  w(ix1^%1ixO^S, mag(1))=(-b1/b0)*w(ix1-1^%1ixO^S,mag(1))+&
+       !                         (-b2/b0)*w(ix1-2^%1ixO^S,mag(1))
+       ! enddo
+       !w(ixO^S,mag(2:3))=0.d0
+       !call mhd_to_conserved(ixI^L,ixO^L,w,x)
+     case(3)
+
+     case(4)
+
+     case(5)
+
+     case(6)
+
+     case default
+       call mpistop("Special boundary is not defined for this region")
+    end select
+
+  end subroutine specialbound_usr
+
+  !==============================================================================
+  ! Purpose: get gravity field
+  !==============================================================================
+  subroutine getggrav(ggrid,ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,ixImax3,&
+     ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3,x)
+    use mod_global_parameters
+    integer, intent(in)             :: ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,&
+       ixImax3, ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3
+    double precision, intent(in)    :: x(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,1:ndim)
+    double precision, intent(out)   :: ggrid(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3)
+
+    ggrid(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3)=usr_grav*SRadius**2/(x(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3,1))**2
+  end subroutine
+
+  !==============================================================================
+  ! Purpose: get gravity field
+  !==============================================================================
+  subroutine gravity(ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,ixImax3,ixOmin1,&
+     ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3,wCT,x,gravity_field)
+    use mod_global_parameters
+    integer, intent(in)             :: ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,&
+       ixImax3, ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3
+    double precision, intent(in)    :: x(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,1:ndim)
+    double precision, intent(in)    :: wCT(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,1:nw)
+    double precision, intent(out)   :: gravity_field(ixImin1:ixImax1,&
+       ixImin2:ixImax2,ixImin3:ixImax3,ndim)
+    double precision                :: ggrid(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3)
+
+    gravity_field=0.d0
+    call getggrav(ggrid,ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,ixImax3,&
+       ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3,x)
+    gravity_field(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       1)=ggrid(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3)
+  end subroutine gravity
+
+  !==============================================================================
+  ! Purpose: Enforce additional refinement or coarsening. One can use the
+  !          coordinate info in x and/or time qt=t_n and w(t_n) values w.
+  !==============================================================================
+    subroutine special_refine_grid(igrid,level,ixImin1,ixImin2,ixImin3,ixImax1,&
+       ixImax2,ixImax3,ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3,qt,w,x,&
+       refine,coarsen)
+    use mod_global_parameters
+
+    integer, intent(in) :: igrid, level, ixImin1,ixImin2,ixImin3,ixImax1,&
+       ixImax2,ixImax3, ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3
+    double precision, intent(in) :: qt, w(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,1:nw), x(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,1:ndim)
+    double precision :: joverb_cr, dxmin
+    integer, intent(inout) :: refine, coarsen
+    double precision  :: current(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,1:ndir), btotal(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,1:ndir), absj(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3), absb(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3)
+    integer :: idirmin
+
+    double precision :: th(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+        ph(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3)
+    logical :: inwin(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+        phi_wrap
+    double precision :: th_min, th_max, ph_min, ph_max
+    double precision :: global_th_min, global_th_max, global_ph_min,&
+        global_ph_max
+
+    th(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3) = x(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3,2) !theta in [0,pi]
+    ph(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3) = x(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3,3) !phi   in [0,2*pi)
+
+    dxmin = minval(dxlevel(1:ndim))
+
+    !! 窗口（弧度）
+    !th_min = 0.80; th_max = 1.00
+    !ph_min = 0.30; ph_max = 1.40
+
+    !phi_wrap = (ph_min > ph_max)
+    !inwin(ixO^S) = (th(ixO^S) >= th_min .and. th(ixO^S) <= th_max) .and. &
+    !               ( ( .not. phi_wrap .and. ph(ixO^S) >= ph_min .and. ph(ixO^S) <= ph_max ) .or. &
+    !                 (      phi_wrap .and. (ph(ixO^S) >= ph_min .or.  ph(ixO^S) <= ph_max) ) )
+
+    joverb_cr = 0.1d0 / dxmin
+    btotal = w(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3,mag(:))
+    call curlvector(btotal,ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,ixImax3,&
+       ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3,current,idirmin,1,ndir)
+    absj(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3) = dsqrt(sum(current(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3,:)**2,dim=ndim+1))
+    absb(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3) = dsqrt(sum(btotal(ixOmin1:ixOmax1,ixOmin2:ixOmax2,&
+       ixOmin3:ixOmax3,:)**2,dim=ndim+1))
+
+    !write(*,'(A,I6,A,I2,A,ES12.5,A,ES12.5)') 'igrid=', igrid, ' level=', level, &
+    ! ' dx_min_current=', dxmin, ' joverb_cr=', joverb_cr
+
+     if ((level<refine_max_level) .and. any( ((absj/absb)> joverb_cr     ) &
+        .and. inwin(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3) )) then
+        refine=1
+        coarsen=-1
+     else if ((level<(refine_max_level-1)) .and. any( &
+        ((absj/absb)>(joverb_cr-0.03/dxmin)) .and. inwin(ixOmin1:ixOmax1,&
+        ixOmin2:ixOmax2,ixOmin3:ixOmax3) )) then
+        refine=1
+        coarsen=-1
+      else if ((level<(refine_max_level-2)) .and. any( &
+         ((absj/absb)>(joverb_cr-0.05/dxmin)) .and. inwin(ixOmin1:ixOmax1,&
+         ixOmin2:ixOmax2,ixOmin3:ixOmax3) )) then
+        refine=1
+        coarsen=-1
+      else
+        refine=-1
+        coarsen=0
+      end if
+    
+  end subroutine special_refine_grid
+
+  !==============================================================================
+  ! Purpose: 
+  !   this subroutine can be used in convert, to add auxiliary variables to the
+  !   converted output file, for further analysis using tecplot, paraview, ....
+  !   these auxiliary values need to be stored in the nw+1:nw+nwauxio slots
+  !
+  !   the array normconv can be filled in the (nw+1:nw+nwauxio) range with
+  !   corresponding normalization values (default value 1)
+  !==============================================================================
+  subroutine specialvar_output(ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,ixImax3,&
+     ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3,w,x,normconv)
+    use mod_global_parameters
+    use mod_geometry
+    integer, intent(in)                :: ixImin1,ixImin2,ixImin3,ixImax1,&
+       ixImax2,ixImax3,ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3
+    double precision, intent(in)       :: x(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,1:ndim)
+    double precision                   :: w(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,nw+nwauxio)
+    double precision                   :: normconv(0:nw+nwauxio)
+
+    double precision                   :: w1(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,nw+nwauxio)
+    double precision                   :: qvec(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,1:ndim)
+    double precision                   :: tmp(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3)
+    double precision                   :: current(ixImin1:ixImax1,&
+       ixImin2:ixImax2,ixImin3:ixImax3,1:ndim), Lorentz(ixImin1:ixImax1,&
+       ixImin2:ixImax2,ixImin3:ixImax3,1:ndim)
+    double precision                   :: xlen1,xlen2,xlen3
+    integer :: ix1,ix2,ix3,ixbc1,ixbc2,ixbc3,idirmin,idir,jdir,kdir
+    double precision                   :: divb(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3),B2(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+       dip(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3)
+    double precision                   :: divv(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3), div_free_fi(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3)
+    double precision                   :: vels(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3,1:ndim)
+    ! parameters for magnetic field dips
+    double precision :: dBr_dr(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3), dBr_dth(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3), dBr_dph(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3)
+    double precision :: dip_dir(ixImin1:ixImax1,ixImin2:ixImax2,&
+       ixImin3:ixImax3), r(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+        th(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+        sinth(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3)
+    double precision :: Bmag(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3),&
+        epsBr(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3), eps_sin
+
+    ! output Brtp
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,nw+1:nw+nwauxio)=zero
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,nw+1 )=w(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3,mag(1))*unit_magneticfield
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,nw+2 )=w(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3,mag(2))*unit_magneticfield
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,nw+3 )=w(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3,mag(3))*unit_magneticfield
+    ! output current Jrtp
+    call get_current(w,ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,ixImax3,ixOmin1,&
+       ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3,idirmin,current)
+    B2(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3)=sum(w(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3,mag(1:ndir))**2,dim=ndim+1)
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       nw+4 )=current(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,1)
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       nw+5 )=current(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,2)
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       nw+6 )=current(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,3)
+    ! output divb
+    call get_divb(w,ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,ixImax3,ixOmin1,&
+       ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3,tmp)
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       nw+7 )=tmp(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3)
+    ! output thermal pressure
+    call mhd_get_pthermal(w,x,ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,ixImax3,&
+       ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3,tmp)
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       nw+8 )=tmp(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3)
+    ! output radial velocity Vr
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,nw+9 )=w(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(1))/w(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3,rho_)*unit_velocity/1.d5
+    vels(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3, 1)=w(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(1))/w(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3,rho_)
+    vels(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3, 2)=w(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(2))/w(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3,rho_)
+    vels(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3, 3)=w(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3,mom(3))/w(ixOmin1:ixOmax1,&
+       ixOmin2:ixOmax2,ixOmin3:ixOmax3,rho_)
+    ! output divv
+    call divvector(vels(ixImin1:ixImax1,ixImin2:ixImax2,ixImin3:ixImax3,&
+       1:ndir),ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,ixImax3,ixOmin1,ixOmin2,&
+       ixOmin3,ixOmax1,ixOmax2,ixOmax3,divv)
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       nw+10)=divv(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3)
+    call get_normalized_divb(w,ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,ixImax3,&
+       ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3,div_free_fi)
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,nw+11)=div_free_fi
+    call get_Lorentz_force(ixImin1,ixImin2,ixImin3,ixImax1,ixImax2,ixImax3,&
+       ixOmin1,ixOmin2,ixOmin3,ixOmax1,ixOmax2,ixOmax3,w,Lorentz)
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       nw+12)=Lorentz(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,1)
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       nw+13)=Lorentz(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,2)
+    w(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,&
+       nw+14)=Lorentz(ixOmin1:ixOmax1,ixOmin2:ixOmax2,ixOmin3:ixOmax3,3)
+    ! out dip
+    !r (ixO^S) = x(ixO^S,1)
+    !th(ixO^S) = x(ixO^S,2)
+    !sinth(ixO^S) = sin(th(ixO^S))
+    !eps_sin = 1.0d-6
+    !where (abs(sinth(ixO^S)) < eps_sin) sinth(ixO^S) = eps_sin
+    !
+    !call gradient(w(ixI^S,mag(1)), ixI^L, ixO^L, 1, dBr_dr)
+    !call gradient(w(ixI^S,mag(1)), ixI^L, ixO^L, 2, dBr_dth)
+    !call gradient(w(ixI^S,mag(1)), ixI^L, ixO^L, 3, dBr_dph)
+!
+    !dip_dir(ixO^S) = w(ixO^S,mag(1))                        *dBr_dr(ixO^S)+&
+    !                 w(ixO^S,mag(2))/r(ixO^S)               *dBr_dth(ixO^S)+&
+    !                 w(ixO^S,mag(3))/(r(ixO^S)*sinth(ixO^S))*dBr_dr(ixO^S)
+    !Bmag(ixO^S)  = sqrt(sum(w(ixO^S,mag(1:ndir))**2, dim=ndim+1))
+    !epsBr(ixO^S) = 0.05d0*Bmag(ixO^S)
+!
+    !w(ixO^S,nw+13)=0.d0
+    !where( abs(w(ixO^S,mag(1))) < epsBr(ixO^S) .and. dip_dir(ixO^S) >= 0.d0 )
+    !  w(ixO^S,nw+13) = 1.d0
+    !end where
+!
+    !w(ixO^S,nw+14) = dip_dir(ixO^S)
+!
+  end subroutine specialvar_output
+
+  !==============================================================================
+  ! Purpose: names for special variable output
+  !==============================================================================
+  subroutine specialvarnames_output(varnames)
+  ! newly added variables need to be concatenated with the w_names/primnames string
+    character(len=*) :: varnames
+    varnames='Br Bt Bp Jr Jt Jp divB pth Vr divv fi Lr Lt Lp'
+  end subroutine specialvarnames_output
+
+end module mod_usr

@@ -1,0 +1,93 @@
+a$AMRVAC_DIR/setup.pl -d=3
+
+ &filelist
+        base_filename='data/bipolar'
+        saveprim=.true.
+        autoconvert=.true.
+        convert_type='vtuBCCmpi'
+        nwauxio=11
+ /  
+
+ &savelist
+        ditsave_log=5
+        dtsave_custom=0.02d0
+        dtsave_dat=0.5d0
+        itsave(1,1)=0
+        itsave(1,2)=0
+/
+
+ &stoplist
+        dtmin=1.D-8
+        time_max=25.d0
+        wall_time_max=23.4d0
+ /
+
+ &methodlist
+        time_stepper='threestep'
+        flux_scheme=20*'hll'
+        limiter=20*'vanleer'
+ /
+        tvdlfeps=0.d0
+        small_density = 2497.9540699435920d0 
+        small_values_method = 'replace'
+        fix_small_values=.true.
+
+ &boundlist
+        typeboundary_min1 = 8*'special'
+        typeboundary_max1 = 8*'special'
+        typeboundary_min2 = 8*'pole'
+        typeboundary_max2 = 8*'pole'
+        typeboundary_min3 = 8*'periodic'
+        typeboundary_max3 = 8*'periodic'
+ /
+        nghostcells=4
+
+ &meshlist
+        refine_criterion=3
+        refine_max_level=1
+        refine_threshold=0.2d0,0.3d0,18*0.2d0
+        derefine_ratio=20*0.1d0
+        w_refine_weight(4)=0.4d0
+        w_refine_weight(5)=0.3d0
+        w_refine_weight(6)=0.3d0
+        block_nx1=12
+        block_nx2=12
+        block_nx3=12
+        domain_nx1=72
+        domain_nx2=72
+        domain_nx3=72
+        xprobmin1=1.0d0
+        xprobmax1=30.0d0
+        xprobmin2=0.005d0
+        xprobmax2=0.495d0
+        xprobmin3=0.0d0
+        xprobmax3=1.0d0
+        stretch_dim(1)='uni'
+        qstretch_baselevel=1.01d0
+        ditregrid=3
+ /
+        max_blocks=10000
+        stretch_dim(1)='uni'
+
+ &paramlist
+        typecourant='maxsum'
+        courantpar=0.8d0
+ /
+
+
+ &mhd_list
+        mhd_energy=.true.
+        mhd_internal_e=.true.
+        mhd_viscosity=.false.
+        mhd_gravity=.true.
+        mhd_gamma=1.05d0
+        typedivbfix='ct'
+/
+
+ &usr_list
+        f_current=1.0d0
+        f_q=1.0d4
+        f_d=5.0d0
+        f_L=1.0d0
+/
+

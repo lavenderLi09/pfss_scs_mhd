@@ -1,0 +1,21 @@
+name: off_2270_initwind
+campaign: campaigns_off_2270
+parent_case: off_2270
+role: polytropic_initwind
+amrvac_dir: /Users/zhaoyan/Documents/codes/amrvac3.2
+main_par: amrvac.par
+extra_par_files:
+  - init_check.par
+  - convert.par
+  - dt_cfl_debug_1step_noring.par
+  - dt_cfl_debug_1step_noring_v2.par
+submit_script: submit.lsf
+output_prefixes:
+  - data/off
+analysis_dir: analysis
+figs_dir: figs
+logs_dir: logs
+notes_file: notes.md
+supplementary_items:
+  - off_2270_initwind_hpc/
+  - METHODS_RINGAVG_AND_SPEEDUP_SUMMARY.md

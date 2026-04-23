@@ -1,0 +1,15 @@
+#!/bin/bash
+#BSUB -q mpi
+#BSUB -J bipo_AMR
+#BSUB -n 320
+#BSUB -o ./data/out.txt
+#BSUB -e ./data/err.txt
+
+cd /share/home/guoyang/liyihua/outer_corona_relaxation/off_2270
+echo -n "==job started:"
+date
+echo
+mpirun -np 320 ./amrvac -i amrvac.par > out
+echo -n "==job finished:"
+date
+echo

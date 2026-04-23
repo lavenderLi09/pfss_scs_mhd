@@ -1,0 +1,6 @@
+&paramlist
+  polar_ring_average = .true.
+  polar_ring_theta_cap_north = 0.10d0
+  polar_ring_theta_cap_south = 0.10d0
+  polar_ring_max_chunk = 128
+/

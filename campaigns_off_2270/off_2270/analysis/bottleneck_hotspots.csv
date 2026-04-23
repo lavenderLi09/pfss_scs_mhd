@@ -1,0 +1,2 @@
+frame,cluster_id,n_cells,rank_min,dt_pred_min,r_rep,theta_rep,phi_rep,shell_index_min,shell_index_max,theta_min,theta_max,phi_min,phi_max,block_id_dom,level_dom,dominant_direction,dominant_physics
+off0000,1,10,1,1.0459068034297962e-06,1.000642683695185,0.0026041666666666665,0.3203125,0,0,0.0026041666666666665,0.0026041666666666665,0.29947916666666663,0.34635416666666663,37,1,phi,geometry

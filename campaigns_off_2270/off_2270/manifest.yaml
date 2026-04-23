@@ -1,0 +1,18 @@
+name: off_2270
+campaign: campaigns_off_2270
+parent_case: null
+role: baseline
+amrvac_dir: /Users/zhaoyan/Documents/codes/amrvac3.2
+main_par: amrvac.par
+extra_par_files: []
+submit_script: submit.lsf
+output_prefixes:
+  - data/off
+analysis_dir: analysis
+figs_dir: figs
+logs_dir: logs
+notes_file: notes.md
+supplementary_items:
+  - initial/
+  - hpc_baseline_2026-04-11/
+  - hao_code/

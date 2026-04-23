@@ -1,0 +1,18 @@
+#!/bin/bash
+#BSUB -q mpi
+#BSUB -J bipolar_hpc_pilot
+#BSUB -n 32
+#BSUB -o ./data/hpc_pilot.out
+#BSUB -e ./data/hpc_pilot.err
+
+set -euo pipefail
+
+cd /Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/.worktrees/codex/bipolar-hpc-test/amrvac_polytropic/analytic_bipolar_1to20_stretched/bipolar_hpc_test
+echo -n "==job started:"
+date
+echo
+./run_hpc_pilot.sh all "${LSB_DJOB_NUMPROC:-32}"
+echo
+echo -n "==job finished:"
+date
+echo

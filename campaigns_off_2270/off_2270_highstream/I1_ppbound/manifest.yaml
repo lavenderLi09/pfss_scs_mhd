@@ -1,0 +1,25 @@
+name: I1_ppbound
+campaign: campaigns_off_2270
+parent_case: off_2270_initwind
+role: pp_inner_boundary
+amrvac_dir: /Users/zhaoyan/Documents/codes/amrvac3.2
+main_par: amrvac.par
+extra_par_files:
+  - amrvac_p85.par
+  - smoke_1step.par
+  - dt_cfl_debug_1step_noring.par
+  - dt_cfl_debug_1step_noring_p85.par
+  - dt_cfl_debug_1step_noring_p85_keepvtu.par
+  - dt_cfl_debug_1step_noring_v2.par
+submit_script: submit.sh
+output_prefixes:
+  - data/off
+  - data_p85/off
+analysis_dir: analysis
+figs_dir: figs
+logs_dir: logs
+notes_file: notes.md
+supplementary_items:
+  - pp_strategy_Wang.md
+  - initial/pp_inner_bc_rho_Tiso.bin
+  - initial/pp_inner_bc_rho_Tiso_p85.bin

@@ -1,0 +1,2 @@
+frame,it,time,dt_log,dt_pred_min,dominant_direction,dominant_physics,r_min,theta_min,phi_min,level,block_id,nleafs,time_log,gamma
+off0000,0,0.0,nan,1.0459068034297962e-06,phi,geometry,1.000642683695185,0.0026041666666666665,0.3203125,1,37,3595,0.0,1.05

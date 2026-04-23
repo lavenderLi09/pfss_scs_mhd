@@ -1,0 +1,28 @@
+[bogon:13140] shmem: mmap: an error occurred while determining whether or not /var/folders/rv/5p0qf41n16q806fnfmhv2flh0000gn/T//ompi.bogon.501/jf.0/3891265536/sm_segment.bogon.501.e7f00000.0 could be created.
+[bogon][[59376,0],0][btl_tcp_component.c:1021:mca_btl_tcp_component_create_listen] bind() failed: Operation not permitted (1)
+At line 600 of file mod_input_output.f (unit = 9, file = 'hpc_pilot_offpole_d2_50.par')
+Fortran runtime error: Bad number of index fields for namelist variable ditsave
+
+Error termination. Backtrace:
+
+Could not print backtrace: executable file is not an executable
+#0  0x10320ed2f
+#1  0x10320f8d7
+#2  0x1032101a7
+#3  0x1032fde73
+#4  0x103306193
+#5  0x103306457
+#6  0x102b11edf
+#7  0x102a900cb
+#8  0x102974a0b
+#9  0x102d0c81f
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ |         __  __ ____ ___        _    __  __ ______     ___    ____         |
+ |        |  \/  |  _ \_ _|      / \  |  \/  |  _ \ \   / / \  / ___|        |
+ |        | |\/| | |_) | |_____ / _ \ | |\/| | |_) \ \ / / _ \| |            |
+ |        | |  | |  __/| |_____/ ___ \| |  | |  _ < \ V / ___ \ |___         |
+ |        |_|  |_|_|  |___|   /_/   \_\_|  |_|_| \_\ \_/_/   \_\____|        |
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ Reading hpc_pilot_offpole_d2_50.par

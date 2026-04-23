@@ -1,0 +1,70 @@
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ |         __  __ ____ ___        _    __  __ ______     ___    ____         |
+ |        |  \/  |  _ \_ _|      / \  |  \/  |  _ \ \   / / \  / ___|        |
+ |        | |\/| | |_) | |_____ / _ \ | |\/| | |_) \ \ / / _ \| |            |
+ |        | |  | |  __/| |_____/ ___ \| |  | |  _ < \ V / ___ \ |___         |
+ |        |_|  |_|_|  |___|   /_/   \_\_|  |_|_| \_\ \_/_/   \_\____|        |
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ WARNING: turn off parabolic TC when using hyperbolic TC
+ Use Colgan & Feldman (2008) cooling curve
+ This version only till 10000 K, beware for floor T treatment
+ Reading amrvac.par
+ Reading smoke_1step.par
+ 
+ Output type | tsavestart |  dtsave   | ditsave | itsave(1) | tsave(1)
+         log | 0.000E+00  | ********* |      1  |      0    | *********
+      normal | 0.000E+00  | 0.100E+04 | ******  |      0    | *********
+       slice | 0.000E+00  | ********* | ******  | ******    | *********
+   collapsed | 0.000E+00  | ********* | ******  | ******    | *********
+    analysis | 0.000E+00  | ********* | ******  | ******    | *********
+ 
+ Stretched dimension            1
+ Using stretched grid with qs=   1.0160640000000001        1.0080000000000000        1.0039920318408906     
+         and first cell sizes=   2.5810177198628318E-003   1.2853673903699362E-003   6.4140344369991462E-004
+         Domain size (cells): 600 96 192 
+                Level one dx: 0.317E-01 0.327E-01 0.327E-01 
+           Refine estimation: Lohner's scheme
+ Note, Grid is reconstructed once every           8 iterations
+           restart_from_file:  undefined
+                  converting: F
+
+ Will apply pi-periodic conditions at northpole!
+ Will apply pi-periodic conditions at southpole!
+ qstretch level:   1.0080000000000000     
+ Empirical heating config (Fan-2017 style):
+   heat_on= T
+   F[cgs]=   974000.00000000000       LH[cgs]=   19480000000.000000     
+   r-window=   1.0000000000000000        11.470000000000001     
+   B-weight= F  alpha=   0.0000000000000000       Bref[G]=   5.0000000000000000     
+   heat floor/cap=   0.0000000000000000        100.00000000000000     
+ MHD simulation initialized by amrvac PFSS model
+   Initial Data Shape:            3         600          96         192
+   Load Initial Magnetic field data from: ../off_2270/initial/OFF_combined_lmax10_q1.008_nr600.bin                                            
+ First element before normalization:    3.3831248598263128     
+ Last  element before normalization:    0.0000000000000000     
+     min, max values of initial B (normalized):  -9.5941115325078119        15.413793539236206     
+ PP inner BC loaded: ../off_2270_highstream/I1_ppbound/initial/pp_inner_bc_rho_Tiso_p85.bin
+   rhob_map min/max:   9.9989277473543192E-002  0.92102182989665871     
+   Tiso_map min/max:   2.0088957809049330        2.0100000000136951     
+
+Program received signal SIGILL: Illegal instruction.
+
+Backtrace for this error:
+
+Could not print backtrace: executable file is not an executable
+#0  0x1052bed2f
+#1  0x1052bdd83
+#2  0x194d2d6a3
+#3  0x10430f1b3
+#4  0x10430f1b3
+#5  0x10430f597
+#6  0x1043169e7
+#7  0x1044b6253
+#8  0x104300a8b
+#9  0x1048854c7
+--------------------------------------------------------------------------
+prterun noticed that process rank 0 with PID 75607 on node bogon exited on
+signal 4 (Illegal instruction: 4).
+--------------------------------------------------------------------------

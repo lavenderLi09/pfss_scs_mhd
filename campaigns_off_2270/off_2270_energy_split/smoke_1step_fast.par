@@ -1,0 +1,14 @@
+&stoplist
+  it_max=1
+/
+&savelist
+  dtsave_dat=1.0d99
+  ditsave_log=1
+/
+&meshlist
+  refine_max_level=1
+  domain_nx1=80
+  domain_nx2=32
+  domain_nx3=64
+  max_blocks=5000
+/

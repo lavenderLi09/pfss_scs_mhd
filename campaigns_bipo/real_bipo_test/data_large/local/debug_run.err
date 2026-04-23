@@ -1,0 +1,11 @@
+[bogon:97369] shmem: mmap: an error occurred while determining whether or not /var/folders/rv/5p0qf41n16q806fnfmhv2flh0000gn/T//ompi.bogon.501/jf.0/1496186880/sm_segment.bogon.501.592e0000.0 could be created.
+[bogon][[22830,0],0][btl_tcp_component.c:1021:mca_btl_tcp_component_create_listen] bind() failed: Operation not permitted (1)
+
+Program received signal SIGILL: Illegal instruction.
+
+Backtrace for this error:
+
+Could not print backtrace: executable file is not an executable
+#0  0x105622d2f
+#1  0x105621d83
+#2  0x19e01d6a3

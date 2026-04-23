@@ -1,0 +1,18 @@
+#!/bin/bash
+#BSUB -q mpi
+#BSUB -J MFR_AMR
+#BSUB -n 256
+#BSUB -o ./data/out.txt
+#BSUB -e ./data/err.txt
+
+cd /share/home/guoyang/liyihua/outer_corona_relaxation/bipolar_hpc_test
+echo -n "==job started:"
+date
+#echo
+#mpirun -np 1 ./amrvac -i init.par > init.out
+echo
+mpirun -np 256 ./amrvac -i amrvac.par > out
+#mpirun -np 256 ./amrvac -i resume.par -resume > resume_out
+echo -n "==job finished:"
+date
+echo

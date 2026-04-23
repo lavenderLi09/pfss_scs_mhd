@@ -1,0 +1,7 @@
+&stoplist
+  it_max=1
+/
+&savelist
+  dtsave_dat=1000.0d0
+  ditsave_log=1
+/

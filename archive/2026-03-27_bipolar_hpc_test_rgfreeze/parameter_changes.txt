@@ -1,0 +1,27 @@
+Test archive: bipolar_hpc_test rgfreeze isolation run
+Date: 2026-03-27
+
+Case directory:
+/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/bipolar_hpc_test
+
+Archived files:
+- mod_usr.t
+- hpc_pilot_offpole_rgfreeze.par
+
+Purpose:
+- isolate whether the NaN onset is triggered by dynamic regridding
+
+Parameter changes relative to hpc_pilot_offpole_d2_50.par:
+- base_filename: 'data/hpc_pilot_offpole_d2_50' -> 'data_rgfreeze/hpc_pilot_offpole_rgfreeze'
+- ditregrid: 2 -> 1000
+
+Other key run controls kept the same:
+- ditsave_log=1
+- ditsave_dat=2
+- it_max=50
+- refine_max_level=2
+
+Notes:
+- mod_usr.t archived here is the exact case file used for this test
+- this archive records test inputs only; outputs remain in:
+  /Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/bipolar_hpc_test/data_rgfreeze

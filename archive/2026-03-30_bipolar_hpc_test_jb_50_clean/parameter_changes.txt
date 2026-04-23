@@ -1,0 +1,37 @@
+Test archive: bipolar_hpc_test jb-driven AMR clean-build rerun
+Date: 2026-03-30
+
+Case directory:
+/Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/bipolar_hpc_test
+
+Archived files:
+- mod_usr.t
+- hpc_pilot_offpole_jb_50_clean.par
+
+Purpose:
+- rerun the jb-driven AMR test after a strict clean rebuild
+- remove ambiguity about whether the modified mod_usr.t was fully propagated into the executable
+
+Build discipline for this rerun:
+- make clean
+- setup.pl -d=3
+- make
+
+Run settings relative to the previous jb_50 test:
+- physics and AMR settings are unchanged
+- base_filename: 'data_jb_50/hpc_pilot_offpole_jb_50' -> 'data_jb_50_clean/hpc_pilot_offpole_jb_50_clean'
+
+Key AMR controls used:
+- force_inner kept
+- force_sheet uses eta_JB = |J|*Delta/|B|
+- Delta = min(dr, r*dtheta, r*sin(theta)*dphi)
+- amr_jb_eta_max_min=1.0
+- amr_jb_eta_mean_min=0.3
+- ditregrid=2
+- refine_max_level=2
+
+Notes:
+- old non-clean-build dat/vtu outputs in data_jb_50 were removed before this rerun at user request
+- old log/stdout in data_jb_50 were kept as run history
+- outputs for this clean-build rerun are written to:
+  /Users/zhaoyan/Documents/05_heliosphere/pfss_scs_mhd/amrvac_polytropic/bipolar_hpc_test/data_jb_50_clean

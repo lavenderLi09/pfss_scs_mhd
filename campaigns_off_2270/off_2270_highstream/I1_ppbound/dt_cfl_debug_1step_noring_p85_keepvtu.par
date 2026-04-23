@@ -1,0 +1,17 @@
+&filelist
+  autoconvert=.true.
+/
+&savelist
+  dtsave_log=1.d0
+  dtsave_dat=1.d99
+  itsave(1,1)=0
+  itsave(1,2)=0
+/
+&stoplist
+  it_max=1
+/
+&paramlist
+  polar_ring_average=.false.
+  polar_ring_evolve=.false.
+  polar_ring_recon=.false.
+/

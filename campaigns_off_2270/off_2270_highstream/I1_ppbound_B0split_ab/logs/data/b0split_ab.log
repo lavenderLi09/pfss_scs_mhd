@@ -1,0 +1,2 @@
+it global_time dt rho m1 m2 m3 e b1 b2 b3 psi c1 c2 n1 n2 | Xload Xmemory 'Cell_Updates /second/core' 'Active_Blocks/Core' 'Wct Per Code Time [s]' 'TimeToFinish [hrs]'
+       1  1.78273550E-05  1.78221674E-05   7.47813220E-05  1.33857667E-04  3.50852863E-11 -6.46620516E-15  2.32520260E-03  1.28320340E-11  2.24505141E-10  4.39519566E-12  4.27416875E-14   9.59341071E-01  4.06589292E-02     1621    4312 |   0.00E+00  0.00E+00  1.42E+05  5.93E+03  3.60E+07  2.00E+04

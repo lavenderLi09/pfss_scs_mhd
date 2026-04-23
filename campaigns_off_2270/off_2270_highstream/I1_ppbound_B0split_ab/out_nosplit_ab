@@ -1,0 +1,66 @@
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ |         __  __ ____ ___        _    __  __ ______     ___    ____         |
+ |        |  \/  |  _ \_ _|      / \  |  \/  |  _ \ \   / / \  / ___|        |
+ |        | |\/| | |_) | |_____ / _ \ | |\/| | |_) \ \ / / _ \| |            |
+ |        | |  | |  __/| |_____/ ___ \| |  | |  _ < \ V / ___ \ |___         |
+ |        |_|  |_|_|  |___|   /_/   \_\_|  |_|_| \_\ \_/_/   \_\____|        |
+ -----------------------------------------------------------------------------
+ -----------------------------------------------------------------------------
+ Reading amrvac_nosplit.par
+ 
+ Output type | tsavestart |  dtsave   | ditsave | itsave(1) | tsave(1)
+         log | 0.000E+00  | ********* |      1  |      0    | *********
+      normal | 0.000E+00  | ********* | ******  |      0    | *********
+       slice | 0.000E+00  | ********* | ******  | ******    | *********
+   collapsed | 0.000E+00  | ********* | ******  | ******    | *********
+    analysis | 0.000E+00  | ********* | ******  | ******    | *********
+ 
+ Stretched dimension            1
+ Using stretched grid with qs=   1.0160640000000001        1.0080000000000000        1.0039920318408906     
+         and first cell sizes=   2.5810177198628318E-003   1.2853673903699362E-003   6.4140344369991462E-004
+         Domain size (cells): 600 96 192 
+                Level one dx: 0.317E-01 0.327E-01 0.327E-01 
+           Refine estimation: Lohner's scheme
+ Note, Grid is reconstructed once every           8 iterations
+           restart_from_file:  undefined
+                  converting: F
+
+ Will apply pi-periodic conditions at northpole!
+ Will apply pi-periodic conditions at southpole!
+ qstretch level:   1.0080000000000000     
+ MHD simulation initialized by amrvac PFSS model
+   Initial Data Shape:            3         600          96         192
+   Load Initial Magnetic field data from: ../../off_2270_initwind/initial/OFF_combined_lmax10_q1.008_nr600.bin                                
+ First element before normalization:    3.3831248598263128     
+ Last  element before normalization:    0.0000000000000000     
+     min, max values of initial B (normalized):  -9.5941115325078119        15.413793539236206     
+ PP inner BC loaded: ./initial/pp_inner_bc_rho_Tiso_p85.bin
+   rhob_map min/max:   9.9989277473543192E-002  0.92102182989665871     
+   Tiso_map min/max:   2.0088957809049330        2.0100000000136951     
+   sample (ith,iph)=           1           1  Tiso_loc=   2.0099999999999998       V_surface_loc=  0.13898225321845334       rho(r=1)=  0.10000000000000001       rhob_loc=  0.10000000000000001     
+   sample (ith,iph)=          48          96  Tiso_loc=   2.0099999999999998       V_surface_loc=  0.13898225321845334       rho(r=1)=  0.10000000000000001       rhob_loc=  0.10000000000000001     
+   sample (ith,iph)=          96         192  Tiso_loc=   2.0099999999999998       V_surface_loc=  0.13898225321845334       rho(r=1)=  0.10000000000000001       rhob_loc=  0.10000000000000001     
+ PSW at            2 ghost layer
+ Velocity at current layer  0.13836923218152214     
+ number density at current layer  0.10069764586274095     
+ p_ at current layer   4.0494527565628351     
+ PSW at            1 ghost layer
+ Velocity at current layer  0.13775241051873766     
+ number density at current layer  0.10140732997965300     
+ p_ at current layer   4.0794242059788006     
+ number density at maxmal r   1.0407498042769070E-005
+ velocity ar maxmal r   3.3407839425003476     
+ Relax a solor wind model with politropic MHD
+ User Tiso(MK):    2.0099999999999998     
+ V_surface(unit_velocity):   0.13898225321845334     
+ PP/PKSW inner BC applied (iB=1) at qt=   0.0000000000000000     
+   rho min/max:  0.10035082043288424       0.10105448932331944     
+   mom1 min/max:   1.3915964830907570E-002   1.3951404427832962E-002
+   p_(eint) min/max:   4.0348094277803668        4.0645216891841471     
+ -------------------------------------------------------------------------------
+ Startup phase took :           249.081 sec
+ -------------------------------------------------------------------------------
+ Start integrating, print status every  3.00E+01 seconds
+   #        it        time          dt  wc-time(s)
+   #         0  0.0000E+00  1.7827E-05  2.2152E+01
